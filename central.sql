@@ -38,9 +38,9 @@ CREATE TABLE `product_category`(
 ) ENGINE = InnoDB;
 
 -- Foreign keys
-ALTER TABLE `product` ADD FOREIGN KEY (`distributor_id`) REFERENCES `distributor` (`id`);
-ALTER TABLE `product_category` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-ALTER TABLE `product_category` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+ALTER TABLE `product` ADD FOREIGN KEY (`distributor_id`) REFERENCES `distributor` (`distributor_id`);
+ALTER TABLE `product_category` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
+ALTER TABLE `product_category` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
 
 -- Stored procedures
 --Coming soon...

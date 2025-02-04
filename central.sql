@@ -40,12 +40,54 @@ CREATE TABLE `category`(
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
+CREATE TABLE `category_distributor`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_category INT UNSIGNED NOT NULL,
+    id_distributor INT UNSIGNED NOT NULL
+) ENGINE = InnoDB;
+
 -- Foreign keys
 ALTER TABLE `product` ADD FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id`);
 ALTER TABLE `product` ADD FOREIGN KEY (`id_category`) REFERENCES `category` (`id`);
+ALTER TABLE `category_distributor` ADD FOREIGN KEY (`id_category`) REFERENCES `category` (`id`);
+ALTER TABLE `category_distributor` ADD FOREIGN KEY (`id_distributor`) REFERENCES `distributor` (`id`);
 
 -- Stored procedures
---Coming soon...
+DELIMITER $$
+CREATE PROCEDURE `add_product`(    
+    IN `new_sku` VARCHAR(15) NOT NULL,
+    IN `new_serial_number` INT UNSIGNED NOT NULL,
+    IN `new_name` VARCHAR(255) NOT NULL,
+    IN `new_description` TEXT NOT NULL,
+    IN `new_price` SMALLINT UNSIGNED NOT NULL,
+    IN `new_id_category` INT UNSIGNED NOT NULL,
+    IN `new_id_supplier` INT UNSIGNED NOT NULL
+)
+NOT DETERMINISTIC CONTAINS SQL SQL SECURITY
+DEFINER
+    INSERT INTO `central`.`product` (
+        sku,
+        serial_number,
+        name,
+        description,
+        price,
+        id_category,
+        id_supplier,
+    )
+    VALUES (
+        new_sku,
+        new_titre,
+        new_sku,
+        new_serial_number,
+        new_name,
+        new_description,
+        new_price,
+        new_id_category,
+        new_id_supplier
+    )
+;
+$$
+DELIMITER ;
 
 -- Triggers
 DELIMITER //

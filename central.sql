@@ -7,7 +7,7 @@ USE `central`;
 CREATE TABLE `product`(
     product_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     sku VARCHAR(15) NOT NULL,
-    serial_number INT UNSIGNED NOT NULL,
+    serial_number INT UNSIGNED UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     price BIGINT NOT NULL,

@@ -1,10 +1,10 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { Pool, RowDataPacket } from "mysql2/promise";
 import { MYSQL_CONNECTION } from "../database.module";
 
 @Injectable()
 export class ProductService {
-  constructor(@Inject(MYSQL_CONNECTION) private readonly pool: Pool) {}
+  constructor(@Inject(MYSQL_CONNECTION) private readonly db: Pool) {}
 
   private formatProduct(p: object) {
     return {
@@ -16,7 +16,7 @@ export class ProductService {
   }
 
   async findAll() {
-    const [products] = await this.pool.query<RowDataPacket[]>(
+    const [products] = await this.db.query<RowDataPacket[]>(
       `SELECT * FROM product`
     );
 
@@ -24,7 +24,7 @@ export class ProductService {
   }
 
   async findOne(id: number) {
-    const [rows] = await this.pool.execute(
+    const [rows] = await this.db.execute(
       `SELECT 
               p.product_id, 
               p.sku, 

@@ -60,7 +60,7 @@ CREATE PROCEDURE `add_product`(
     IN `new_serial_number` INT UNSIGNED,
     IN `new_name` VARCHAR(255),
     IN `new_description` TEXT,
-    IN `new_price` SMALLINT UNSIGNED,
+    IN `new_price` MEDIUMINT UNSIGNED,
     IN `new_category` VARCHAR(255),
     IN `new_supplier` VARCHAR(255)
 )

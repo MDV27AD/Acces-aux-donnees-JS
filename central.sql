@@ -53,7 +53,88 @@ ALTER TABLE `category_distributor` ADD FOREIGN KEY (`id_category`) REFERENCES `c
 ALTER TABLE `category_distributor` ADD FOREIGN KEY (`id_distributor`) REFERENCES `distributor` (`id`);
 
 -- Stored procedures
---Coming soon...
+DELIMITER $$
+CREATE PROCEDURE `add_product`(    
+    IN `new_sku` VARCHAR(15),
+    IN `new_serial_number` INT UNSIGNED,
+    IN `new_name` VARCHAR(255),
+    IN `new_description` TEXT,
+    IN `new_price` SMALLINT UNSIGNED,
+    IN `new_category` VARCHAR(255),
+    IN `new_supplier` VARCHAR(255)
+)
+NOT DETERMINISTIC
+CONTAINS SQL
+SQL SECURITY DEFINER
+BEGIN
+    DECLARE category_id INT UNSIGNED;
+    DECLARE supplier_id INT UNSIGNED;
+
+    -- Checking parameters
+    IF new_sku = "" THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'new_sku cannot be null.';
+    END IF;
+    IF new_serial_number = "" THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'new_serial_number cannot be null.';
+    END IF;
+    IF new_name = "" THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'new_name cannot be null.';
+    END IF;
+    IF new_description = "" THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'new_description cannot be null.';
+    END IF;
+    IF new_price = "" THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'new_price cannot be null.';
+    END IF;
+    IF new_category = "" THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'new_category cannot be null.';
+    END IF;
+    IF new_supplier = "" THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'new_supplier cannot be null.';
+    END IF;
+
+    -- Creating the new category if it doesn't exist
+    SELECT `id` INTO category_id FROM `central`.`category` WHERE `name` = new_category LIMIT 1;
+    IF category_id IS NULL THEN
+        INSERT INTO `central`.`category` (`name`) VALUES (new_category);
+        SELECT `id` INTO category_id FROM `central`.`category` WHERE `name` = new_category LIMIT 1;
+    END IF;
+
+    -- Creating the new supplier if it doesn't exist
+    SELECT `id` INTO supplier_id FROM `central`.`supplier` WHERE `name` = new_supplier LIMIT 1;
+    IF supplier_id IS NULL THEN
+        INSERT INTO `central`.`supplier` (`name`) VALUES (new_supplier);
+        SELECT `id` INTO supplier_id FROM `central`.`supplier` WHERE `name` = new_supplier LIMIT 1;
+    END IF;
+
+    -- Creating the new product
+    INSERT INTO `central`.`product` (
+        `sku`,
+        `serial_number`,
+        `name`,
+        `description`,
+        `price`,
+        `id_category`,
+        `id_supplier`
+    )
+    VALUES (
+        new_sku,
+        new_serial_number,
+        new_name,
+        new_description,
+        new_price,
+        category_id,
+        supplier_id
+    );
+END $$
+DELIMITER ;
 
 -- Triggers
 DELIMITER //
@@ -65,7 +146,7 @@ BEGIN
     -- Forbidding the created_at field to be modified
     IF NEW.created_at <> OLD.created_at THEN
         SIGNAL SQLSTATE '45000' 
-            SET MESSAGE_TEXT = 'You cannot change created_at time of an item.';
+        SET MESAGE_TEXT = 'You cannot change created_at time of an item.';
     END IF;
 
     -- Updating the updated_at field
@@ -79,7 +160,7 @@ BEGIN
     -- Forbidding the created_at field to be modified
     IF NEW.created_at <> OLD.created_at THEN
         SIGNAL SQLSTATE '45000' 
-            SET MESSAGE_TEXT = 'You cannot change created_at time of an item.';
+        SET MESSAGE_TEXT = 'You cannot change created_at time of an item.';
     END IF;
 
     -- Updating the updated_at field
@@ -93,7 +174,7 @@ BEGIN
     -- Forbidding the created_at field to be modified
     IF NEW.created_at <> OLD.created_at THEN
         SIGNAL SQLSTATE '45000' 
-            SET MESSAGE_TEXT = 'You cannot change created_at time of an item.';
+        SET MESSAGE_TEXT = 'You cannot change created_at time of an item.';
     END IF;
 END //
 
@@ -101,5 +182,5 @@ DELIMITER ;
 
 -- Users
 CREATE USER 'central_user'@'localhost' IDENTIFIED BY 'NBFR5678IOùm:LK?NIBO87TIGYO8-rod(tyrfo-)';
-GRANT SELECT, EXECUTE ON `central`.* TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`add_product` TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

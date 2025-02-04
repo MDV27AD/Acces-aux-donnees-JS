@@ -40,9 +40,17 @@ CREATE TABLE `category`(
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
+CREATE TABLE `category_distributor`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_category INT UNSIGNED NOT NULL,
+    id_distributor INT UNSIGNED NOT NULL
+) ENGINE = InnoDB;
+
 -- Foreign keys
 ALTER TABLE `product` ADD FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id`);
 ALTER TABLE `product` ADD FOREIGN KEY (`id_category`) REFERENCES `category` (`id`);
+ALTER TABLE `category_distributor` ADD FOREIGN KEY (`id_category`) REFERENCES `category` (`id`);
+ALTER TABLE `category_distributor` ADD FOREIGN KEY (`id_distributor`) REFERENCES `distributor` (`id`);
 
 -- Stored procedures
 --Coming soon...

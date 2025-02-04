@@ -5,20 +5,20 @@ USE `central`;
 
 -- Tables
 CREATE TABLE `product`(
-    product_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     sku VARCHAR(15) NOT NULL,
-    serial_number INT UNSIGNED UNIQUE NOT NULL,
+    serial_number INT UNSIGNED NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price BIGINT NOT NULL,
+    price FLOAT NOT NULL,
     status ENUM('available', 'out_of_stock') NOT NULL DEFAULT 'available',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    distributor_id INT UNSIGNED NOT NULL
+    id_distributor INT UNSIGNED NOT NULL
 ) ENGINE = InnoDB;
 
 CREATE TABLE `distributor`(
-    distributor_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -26,21 +26,21 @@ CREATE TABLE `distributor`(
 ) ENGINE = InnoDB;
 
 CREATE TABLE `category`(
-    category_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
 CREATE TABLE `product_category`(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    product_id INT UNSIGNED NOT NULL,
-    category_id INT UNSIGNED NOT NULL
+    id_product INT UNSIGNED NOT NULL,
+    id_category INT UNSIGNED NOT NULL
 ) ENGINE = InnoDB;
 
 -- Foreign keys
-ALTER TABLE `product` ADD FOREIGN KEY (`distributor_id`) REFERENCES `distributor` (`distributor_id`);
-ALTER TABLE `product_category` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
-ALTER TABLE `product_category` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
+ALTER TABLE `product` ADD FOREIGN KEY (`id_distributor`) REFERENCES `distributor` (`id`);
+ALTER TABLE `product_category` ADD FOREIGN KEY (`id_product`) REFERENCES `product` (`id`);
+ALTER TABLE `product_category` ADD FOREIGN KEY (`id_category`) REFERENCES `category` (`id`);
 
 -- Stored procedures
 --Coming soon...

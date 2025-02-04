@@ -1,4 +1,5 @@
 -- Database
+DROP DATABASE IF EXISTS `central`;
 CREATE DATABASE `central`
 DEFAULT CHARACTER SET UTF8MB4 COLLATE utf8mb4_unicode_ci;
 USE `central`;
@@ -53,41 +54,7 @@ ALTER TABLE `category_distributor` ADD FOREIGN KEY (`id_category`) REFERENCES `c
 ALTER TABLE `category_distributor` ADD FOREIGN KEY (`id_distributor`) REFERENCES `distributor` (`id`);
 
 -- Stored procedures
-DELIMITER $$
-CREATE PROCEDURE `add_product`(    
-    IN `new_sku` VARCHAR(15) NOT NULL,
-    IN `new_serial_number` INT UNSIGNED NOT NULL,
-    IN `new_name` VARCHAR(255) NOT NULL,
-    IN `new_description` TEXT NOT NULL,
-    IN `new_price` SMALLINT UNSIGNED NOT NULL,
-    IN `new_id_category` INT UNSIGNED NOT NULL,
-    IN `new_id_supplier` INT UNSIGNED NOT NULL
-)
-NOT DETERMINISTIC CONTAINS SQL SQL SECURITY
-DEFINER
-    INSERT INTO `central`.`product` (
-        sku,
-        serial_number,
-        name,
-        description,
-        price,
-        id_category,
-        id_supplier,
-    )
-    VALUES (
-        new_sku,
-        new_titre,
-        new_sku,
-        new_serial_number,
-        new_name,
-        new_description,
-        new_price,
-        new_id_category,
-        new_id_supplier
-    )
-;
-$$
-DELIMITER ;
+--Coming soon...
 
 -- Triggers
 DELIMITER //
@@ -134,6 +101,6 @@ END //
 DELIMITER ;
 
 -- Users
-CREATE USER 'central_user'@'localhost' IDENTIFIED BY 'NBFR5678IOùm:LK?NIBO87TIGYO8-rod(tyrfo-)';
+CREATE USER IF NOT EXISTS 'central_user'@'localhost' IDENTIFIED BY 'NBFR5678IOùm:LK?NIBO87TIGYO8-rod(tyrfo-)';
 GRANT SELECT, EXECUTE ON `central`.* TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

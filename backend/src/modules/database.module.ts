@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { createPool } from "mysql2/promise";
+import { ConnectionOptions, createPool } from "mysql2/promise";
 
 export const MYSQL_CONNECTION = "MYSQL_CONNECTION";
 

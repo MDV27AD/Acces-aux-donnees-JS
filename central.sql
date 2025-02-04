@@ -7,14 +7,23 @@ USE `central`;
 CREATE TABLE `product`(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     sku VARCHAR(15) NOT NULL,
-    serial_number INT UNSIGNED NOT NULL,
+    serial_number INT UNSIGNED UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price FLOAT NOT NULL,
+    price SMALLINT UNSIGNED NOT NULL,
     status ENUM('available', 'out_of_stock') NOT NULL DEFAULT 'available',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    id_distributor INT UNSIGNED NOT NULL
+    id_category INT UNSIGNED NOT NULL,
+    id_supplier INT UNSIGNED NOT NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE `supplier`(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
 CREATE TABLE `distributor`(
@@ -31,24 +40,17 @@ CREATE TABLE `category`(
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
-CREATE TABLE `product_category`(
-    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    id_product INT UNSIGNED NOT NULL,
-    id_category INT UNSIGNED NOT NULL
-) ENGINE = InnoDB;
-
 -- Foreign keys
-ALTER TABLE `product` ADD FOREIGN KEY (`id_distributor`) REFERENCES `distributor` (`id`);
-ALTER TABLE `product_category` ADD FOREIGN KEY (`id_product`) REFERENCES `product` (`id`);
-ALTER TABLE `product_category` ADD FOREIGN KEY (`id_category`) REFERENCES `category` (`id`);
+ALTER TABLE `product` ADD FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id`);
+ALTER TABLE `product` ADD FOREIGN KEY (`id_category`) REFERENCES `category` (`id`);
 
 -- Stored procedures
 --Coming soon...
 
 -- Triggers
-DELIMITER $$
+DELIMITER //
 
-CREATE TRIGGER product_pre_update
+CREATE TRIGGER `product_pre_update`
 BEFORE UPDATE ON product
 FOR EACH ROW
 BEGIN
@@ -60,10 +62,10 @@ BEGIN
 
     -- Updating the updated_at field
     SET NEW.updated_at = CURRENT_TIMESTAMP;
-END $$
+END //
 
-CREATE TRIGGER distributor_pre_update
-BEFORE UPDATE ON distributor
+CREATE TRIGGER `supplier_pre_update`
+BEFORE UPDATE ON supplier
 FOR EACH ROW
 BEGIN
     -- Forbidding the created_at field to be modified
@@ -74,9 +76,9 @@ BEGIN
 
     -- Updating the updated_at field
     SET NEW.updated_at = CURRENT_TIMESTAMP;
-END $$
+END //
 
-CREATE TRIGGER category_pre_update
+CREATE TRIGGER `category_pre_update`
 BEFORE UPDATE ON category
 FOR EACH ROW
 BEGIN
@@ -85,7 +87,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' 
             SET MESSAGE_TEXT = 'You cannot change created_at time of an item.';
     END IF;
-END $$
+END //
 
 DELIMITER ;
 

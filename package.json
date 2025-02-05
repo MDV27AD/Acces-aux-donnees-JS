@@ -6,9 +6,9 @@
   "scripts": {
     "front:start": "src/Front/index.html",
     "sql:start": "node src/SQL/central.sql",
-    "serve:game_ez": "node ./src/MongoDB/GamEZ/app.js",
-    "serve:sport_salut": "node ./src/MongoDB/SPORT_SALUT/app.js",
-    "serve:medidonc": "node ./src/MongoDB/MEDIDONC/app.js",
+    "serve:game_ez": "node src/MongoDB/GamEZ/app.js",
+    "serve:sport_salut": "node src/MongoDB/SPORT_SALUT/app.js",
+    "serve:medidonc": "node src/MongoDB/MEDIDONC/app.js",
     "back:build": "nest build",
     "back:format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "back:start": "nest start",

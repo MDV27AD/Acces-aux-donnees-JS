@@ -24,6 +24,6 @@ export const getAllProducts = async (_req, res) => {
 }
 
 export const getAvailableProducts = async (_req, res) => {
-    const menus = await Product.findOne({ p_status: 'En stock' })
+    const menus = await Product.find({ p_status: 'En stock' })
     res.status(200).json(menus)
 }

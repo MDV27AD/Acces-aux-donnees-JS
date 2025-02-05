@@ -3,13 +3,13 @@ import dotenv from 'dotenv'
 // Routes
 import meDiDoncProductRoute from "./routes/product.route.js"
 // Services
-import {MongoDb, MongoApp, appServer} from "../services/index.js"
+import {MongoDb, MongoApp, AppServer} from "../services/index.js"
 
 dotenv.config()
 
 const app = express()
 
-appServer(app, process.env.MEDIDONC_PORT)
+AppServer(app, process.env.MEDIDONC_PORT)
 
 // simple route
 app.get("/", (_req, res) => {

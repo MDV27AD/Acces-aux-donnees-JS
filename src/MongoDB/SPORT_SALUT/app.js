@@ -2,14 +2,14 @@ import dotenv from 'dotenv'
 // Routes
 import sportSalutProductRoute from "./routes/product.route.js"
 // Services
-import { MongoDb, MongoApp, appServer } from "../services/index.js"
+import { MongoDb, MongoApp, AppServer } from "../services/index.js"
 import express from "express";
 
 dotenv.config()
 
 const app = express()
 
-appServer(app, process.env.SPORT_SALUT_PORT)
+AppServer(app, process.env.SPORT_SALUT_PORT)
 
 // simple route
 app.get("/", (_req, res) => {

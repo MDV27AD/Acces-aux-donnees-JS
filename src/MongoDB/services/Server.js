@@ -9,7 +9,7 @@ const corsOptions = {
     maxAge: 3600
 }
 
-export const appServer = (app, port) => {
+export const AppServer = (app, port) => {
     const server = http.createServer(app)
     server.listen(port, () => {
         console.log(`Serveur en cours sur le port ${port}.`)

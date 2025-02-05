@@ -4,22 +4,22 @@ import { MYSQL_CONNECTION } from "../database.module";
 
 @Injectable()
 export class DistributorService {
-  constructor(@Inject(MYSQL_CONNECTION) private readonly db: Pool) {}
+    constructor(@Inject(MYSQL_CONNECTION) private readonly db: Pool) {}
 
-  async findOne(id: number) {
-    const [rows] = await this.db.execute<RowDataPacket[]>(
-      `
+    async findOne(id: string) {
+        const [rows] = await this.db.execute<RowDataPacket[]>(
+            `
             SELECT *
             FROM distributor
             WHERE id = :id
         `,
-      { id }
-    );
-    const data = rows[0];
+            { id }
+        );
+        const data = rows[0];
 
-    return {
-      id: data.id,
-      name: data.name,
-    };
-  }
+        return {
+            id: data.id,
+            name: data.name,
+        };
+    }
 }

@@ -13,9 +13,9 @@ AppServer(app, process.env.MEDIDONC_PORT)
 
 // simple route
 app.get("/", (_req, res) => {
-    res.json({ message: "✅ Bienvenue dans mon serveur Medidonc" })
+    res.json({ message: "✅ Bienvenue dans mon serveur GameEz" })
 })
 // MongoDb
-MongoApp(app, meDiDoncProductRoute)
+MongoApp(app, 'MEDIDONC', meDiDoncProductRoute)
 MongoDb(process.env.MEDIDONC_URL_MONGODB).then()
 console.log(`process.env.MEDIDONC_URL_MONGODB`, process.env.MEDIDONC_URL_MONGODB)

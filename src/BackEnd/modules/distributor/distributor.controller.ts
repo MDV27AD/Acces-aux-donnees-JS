@@ -4,10 +4,10 @@ import { FindOneParams } from "./params/find-one.params";
 
 @Controller("distributor")
 export class DistributorController {
-  constructor(private readonly distributorService: DistributorService) {}
+    constructor(private readonly distributorService: DistributorService) {}
 
-  @Get(":id")
-  async findOne(@Param() params: FindOneParams) {
-    return this.distributorService.findOne(params.id);
-  }
+    @Get(":id")
+    async findOne(@Param() params: FindOneParams) {
+        return this.distributorService.findOne(params.id);
+    }
 }

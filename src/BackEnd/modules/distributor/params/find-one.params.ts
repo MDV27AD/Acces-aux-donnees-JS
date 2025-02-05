@@ -1,8 +1,6 @@
-import { Type } from "class-transformer";
-import { IsNumber } from "class-validator";
+import { IsString } from "class-validator";
 
 export class FindOneParams {
-  @IsNumber()
-  @Type(() => Number)
-  id: number;
+    @IsString()
+    id: string;
 }

@@ -7,8 +7,6 @@ export const seedProducts = async (
   suppliers: Supplier[],
   categories: Category[]
 ): Promise<Product[]> => {
-  conn.config.namedPlaceholders = true;
-
   const allProducts: Product[] = [];
   for (const supplier of suppliers) {
     const products = await Promise.all(

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { Pool, RowDataPacket } from "mysql2/promise";
 import { MYSQL_CONNECTION } from "../database.module";
 
@@ -17,7 +17,10 @@ export class ProductService {
 
   async findAll() {
     const [products] = await this.db.query<RowDataPacket[]>(
-      `SELECT * FROM product`
+      `
+      SELECT *
+      FROM product
+    `
     );
 
     return products.map(this.formatProduct);

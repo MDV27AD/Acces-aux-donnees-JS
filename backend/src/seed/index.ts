@@ -1,8 +1,9 @@
-import mysql, { Connection } from "mysql2/promise";
-import dotenv from "dotenv";
-import { seedProducts } from "./products";
 import { faker } from "@faker-js/faker/locale/fr";
+import dotenv from "dotenv";
+import { Connection, createConnection } from "mysql2/promise";
+import { getDatabaseConfig } from "src/modules/database.module";
 import { seedDistributors } from "./distributors";
+import { seedProducts } from "./products";
 import { Category, Distributor, Supplier } from "./types";
 
 dotenv.config();
@@ -26,13 +27,6 @@ const categories: Category[] = [
   ...faker.helpers.multiple(faker.commerce.department, { count: 5 }),
 ];
 
-const getDatabaseConnection = async (): Promise<Connection> => {
-  const dbUri = process.env.DB_URI;
-  if (!dbUri) throw "Missing DB_URI";
-
-  return mysql.createConnection(dbUri);
-};
-
 const truncateTables = async (conn: Connection) => {
   await conn.query("SET FOREIGN_KEY_CHECKS = 0;");
   await Promise.all(
@@ -48,7 +42,7 @@ const truncateTables = async (conn: Connection) => {
 };
 
 const seed = async () => {
-  const conn = await getDatabaseConnection();
+  const conn = await createConnection(getDatabaseConfig());
   try {
     console.log("🔮 Truncating tables...");
     await truncateTables(conn);

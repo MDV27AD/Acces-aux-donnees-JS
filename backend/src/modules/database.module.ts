@@ -3,16 +3,21 @@ import { ConnectionOptions, createPool } from "mysql2/promise";
 
 export const MYSQL_CONNECTION = "MYSQL_CONNECTION";
 
+export const getDatabaseConfig = (): ConnectionOptions => {
+  const dbUri = process.env.DB_URI;
+  if (!dbUri) throw "Missing DB_URI";
+
+  return {
+    uri: dbUri,
+    namedPlaceholders: true,
+  };
+};
+
 @Module({
   providers: [
     {
       provide: MYSQL_CONNECTION,
-      useFactory: () => {
-        const dbUri = process.env.DB_URI;
-        if (!dbUri) throw "Missing DB_URI";
-
-        return createPool(dbUri);
-      },
+      useFactory: () => createPool(getDatabaseConfig()),
     },
   ],
   exports: [MYSQL_CONNECTION],

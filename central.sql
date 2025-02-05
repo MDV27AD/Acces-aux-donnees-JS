@@ -10,7 +10,7 @@ CREATE TABLE `product`(
     serial_number INT UNSIGNED UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price SMALLINT UNSIGNED NOT NULL,
+    price MEDIUMINT UNSIGNED NOT NULL,
     status ENUM('available', 'out_of_stock') NOT NULL DEFAULT 'available',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -59,7 +59,7 @@ CREATE PROCEDURE `add_product`(
     IN `new_serial_number` INT UNSIGNED,
     IN `new_name` VARCHAR(255),
     IN `new_description` TEXT,
-    IN `new_price` SMALLINT UNSIGNED,
+    IN `new_price` MEDIUMINT UNSIGNED,
     IN `new_category` VARCHAR(255),
     IN `new_supplier` VARCHAR(255)
 )

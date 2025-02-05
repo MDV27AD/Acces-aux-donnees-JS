@@ -21,8 +21,10 @@ LEFT JOIN supplier s ON s.id = p.id_supplier
 export class ProductService {
   constructor(@Inject(MYSQL_CONNECTION) private readonly db: Pool) {}
 
-  async findAll() {
-    const [products] = await this.db.query<RowDataPacket[]>(SELECT);
+  async findAll(limit: number) {
+    const [products] = await this.db.query<RowDataPacket[]>(
+      `${SELECT} ${limit > 0 ? "LIMIT " + limit : ""}`
+    );
 
     return products;
   }

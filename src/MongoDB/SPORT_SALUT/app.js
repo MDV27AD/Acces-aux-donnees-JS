@@ -16,6 +16,6 @@ app.get("/", (_req, res) => {
     res.json({ message: "✅ Bienvenue dans mon serveur SPORT_SALUT" })
 })
 // MongoDb
-MongoApp(app, 'SPORT_SALUT', sportSalutProductRoute)
+MongoApp(app, sportSalutProductRoute)
 MongoDb(process.env.SPORT_SALUT_URL_MONGODB).then()
 console.log(`process.env.SPORT_SALUT_URL_MONGODB`, process.env.SPORT_SALUT_URL_MONGODB)

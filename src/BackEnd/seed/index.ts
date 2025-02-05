@@ -42,7 +42,7 @@ const truncateTables = async (conn: Connection) => {
 };
 
 const seed = async () => {
-    const conn = await createConnection(getDatabaseConfig());
+    const conn = await createConnection(getDatabaseConfig("root"));
     try {
         console.log("🔮 Truncating tables...");
         await truncateTables(conn);

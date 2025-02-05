@@ -5,6 +5,10 @@ export const createProduct = async (req, res) => {
         , sellerName: nom_fournisseur, price, category } = req.body
     // Verify if the category is sport
     if (category.includes('sport')){
+        // Verify if product exists
+        const productFound = await Product.find({serial_number_produit})
+        if (productFound)
+            return res.status(400).json({ message: `A product with serial number ${serial_number_produit} exists.`, product: productFound})
         // Create new product
         const product = await Product.create({ sku_produit, serial_number_produit, nom_produit
             , description_produit, nom_fournisseur, prix: price + (price * 20 / 100) })

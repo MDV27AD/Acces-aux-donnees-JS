@@ -3,7 +3,7 @@ import cors from "cors"
 import bodyParser from "body-parser"
 
 const corsOptions = {
-    origin: [/localhost:8080/],
+    origin: '*',
     optionsSuccessStatus: 200, // For legacy browser support
     credentials: true,
     maxAge: 3600

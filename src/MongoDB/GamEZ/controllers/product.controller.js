@@ -7,7 +7,7 @@ export const createProduct = async (req, res) => {
     // Verify if category is valid
     if (['jeu vidéo','jeu de société'].includes(category)){
         // Verify if product exists
-        const productFound = await Product.findOne({product: {product_serial_number}})
+        const productFound = await Product.findOne({product.product_serial_number: product_serial_number}})
         if (productFound)
             return res.status(400).json({ message: `A product with serial number ${product_serial_number} exists.`, product: productFound})
         // Create new product

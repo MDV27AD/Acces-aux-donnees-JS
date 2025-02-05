@@ -31,7 +31,6 @@ async function fetchProducts() {
 
 document.addEventListener("DOMContentLoaded", fetchProducts);
 
-
 document.querySelector('.addProductButton').addEventListener('click', function() {
     const formContainer = document.getElementById('formContainer');
     formContainer.style.display = 'flex';  
@@ -39,7 +38,7 @@ document.querySelector('.addProductButton').addEventListener('click', function()
     fetch('https://acces-aux-donnees-js-medidonc.onrender.com/products')
     .then(response => response.json())
     .then(data => {
-        console.log(data);  // Affiche les données récupérées
+        console.log(data);      // données récupérées
     })
     .catch(error => {
         console.error('Erreur lors de la récupération des données:', error);

@@ -5,8 +5,6 @@ export const seedDistributors = async (
   conn: Connection,
   distributors: Distributor[]
 ) => {
-  conn.config.namedPlaceholders = true;
-
   for (const distributor of distributors) {
     await conn.execute(
       `

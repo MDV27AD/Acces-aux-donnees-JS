@@ -15,7 +15,7 @@ const distributors: Distributor[] = [
 ];
 
 const suppliers: Supplier[] = faker.helpers.multiple(faker.company.name, {
-  count: { min: 15 - 10, max: 20 - 10 },
+  count: { min: 15, max: 20 },
 });
 
 const categories: Category[] = [

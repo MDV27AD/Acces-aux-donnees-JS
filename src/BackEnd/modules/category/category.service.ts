@@ -3,23 +3,17 @@ import { Pool, RowDataPacket } from "mysql2/promise";
 import { MYSQL_CONNECTION } from "../database.module";
 
 @Injectable()
-export class DistributorService {
+export class CategoryService {
   constructor(@Inject(MYSQL_CONNECTION) private readonly db: Pool) {}
 
-  async findOne(id: string) {
+  async findAll() {
     const [rows] = await this.db.execute<RowDataPacket[]>(
       `
-            SELECT *
-            FROM distributor
-            WHERE id = :id
-        `,
-      { id }
+        SELECT name
+        FROM category
+    `
     );
-    const data = rows[0];
 
-    return {
-      id: data.id,
-      name: data.name,
-    };
+    return rows.map((r) => r.name);
   }
 }

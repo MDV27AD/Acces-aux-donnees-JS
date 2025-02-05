@@ -16,6 +16,6 @@ app.get("/", (_req, res) => {
     res.json({ message: "✅ Bienvenue dans mon serveur GameEz" })
 })
 // MongoDb
-MongoApp(app, 'GameEz', gameEzProductRoute)
+MongoApp(app, gameEzProductRoute)
 MongoDb(process.env.GAME_EZ_URL_MONGODB).then()
 console.log(`process.env.GAME_EZ_URL_MONGODB`, process.env.GAME_EZ_URL_MONGODB)

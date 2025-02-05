@@ -34,7 +34,16 @@ document.addEventListener("DOMContentLoaded", fetchProducts);
 
 document.querySelector('.addProductButton').addEventListener('click', function() {
     const formContainer = document.getElementById('formContainer');
-    formContainer.style.display = 'flex';  // Affiche le formulaire
+    formContainer.style.display = 'flex';  
+
+    fetch('https://acces-aux-donnees-js-medidonc.onrender.com/products')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);  // Affiche les données récupérées
+    })
+    .catch(error => {
+        console.error('Erreur lors de la récupération des données:', error);
+    });
 });
 
 document.getElementById('submitForm').addEventListener('click', function() {
@@ -42,14 +51,11 @@ document.getElementById('submitForm').addEventListener('click', function() {
     const lastName = document.getElementById('lastName').value;
     const status = document.getElementById('status').value;
     
-    // Ici, tu peux traiter les valeurs ou les afficher dans la console par exemple
     console.log(`Name: ${firstName} ${lastName}, Status: ${status}`);
     
-    // Optionnel : Réinitialiser les champs du formulaire
     document.getElementById('firstName').value = '';
     document.getElementById('lastName').value = '';
     document.getElementById('status').value = 'available';
     
-    // Cacher le formulaire après soumission (si souhaité)
     document.getElementById('formContainer').style.display = 'none';
 });

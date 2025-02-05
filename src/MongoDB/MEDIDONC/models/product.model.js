@@ -11,7 +11,7 @@ const ProductSchema = new Schema(
         p_name: {type: String, required: true},
         p_description: {type: String},
         p_last_update: {type: Date, default: Date.now},
-        p_status: {type: String, enum: ['En stock', 'Rupture de stock'], default: 'En stock '},
+        p_status: {type: String, enum: ['En stock', 'Rupture de stock'], default: 'En stock'},
         p_seller: {id: Number, name: String, creation_date: Date}
     },
     {

@@ -2,7 +2,7 @@
 
 # Env
 
-```yml
+```toml
 DB_URI="mysql://<user>:<password>@<host>:<port>/<database>"
 ```
 

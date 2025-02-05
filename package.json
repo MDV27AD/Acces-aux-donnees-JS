@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sql:start": "node ./src/sql/central.sql",
+    "front:start": "src/Front/index.html",
+    "sql:start": "node src/SQL/central.sql",
     "serve:game_ez": "node ./src/MongoDB/GamEZ/app.js",
     "serve:sport_salut": "node ./src/MongoDB/SPORT_SALUT/app.js",
     "serve:medidonc": "node ./src/MongoDB/MEDIDONC/app.js",

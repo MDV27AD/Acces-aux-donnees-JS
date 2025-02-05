@@ -5,14 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produits</title>
     <link rel="stylesheet" href="stylesProduits.css">
-    <script src="index.js"></script>
 </head>
 <body>
+    <button class="addProductButton"></button>
+
     <div class="container">
         <h1>Liste des Produits</h1>
         <div class="product-list">
 
         </div>
     </div>
+
+    <div id="formContainer" class="form-container" style="display: none;">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" placeholder="Enter first name" required><br><br>
+        
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" placeholder="Enter last name" required><br><br>
+        
+        <label for="status">Status:</label>
+        <select id="status" required>
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+        </select><br><br>
+        
+        <button type="submit" id="submitForm">Submit</button>
+    </div>
+    
+    <script src="index.js"></script>
 </body>
 </html>

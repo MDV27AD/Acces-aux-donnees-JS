@@ -12,6 +12,20 @@ body {
     overflow: hidden; /* Empêche le dépassement du body */
 }
 
+.addProductButton {
+    position: absolute;  /* Positionne le bouton par rapport au body */
+    top: 20px;  /* Espace depuis le haut */
+    left: 20px;  /* Espace depuis la gauche */
+    width: 40px;
+    height: 40px;
+    background: url('img/add.png') no-repeat center center;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    background-color: #B3001B;
+    background-size: 30px 30px;
+}
+
 .edit {
     width: 40px;
     height: 40px;
@@ -121,4 +135,39 @@ button:hover {
 
 .delete:hover {
     background-color: #FF4C4C;
+}
+
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #B3001B;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    width: 300px;
+    color: white;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#submitForm {
+    background-color: #CCAD8F;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submitForm:hover {
+    background-color: white;
+    transform: scale(1.1);
 }

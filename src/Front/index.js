@@ -30,3 +30,26 @@ async function fetchProducts() {
 }
 
 document.addEventListener("DOMContentLoaded", fetchProducts);
+
+
+document.querySelector('.addProductButton').addEventListener('click', function() {
+    const formContainer = document.getElementById('formContainer');
+    formContainer.style.display = 'flex';  // Affiche le formulaire
+});
+
+document.getElementById('submitForm').addEventListener('click', function() {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const status = document.getElementById('status').value;
+    
+    // Ici, tu peux traiter les valeurs ou les afficher dans la console par exemple
+    console.log(`Name: ${firstName} ${lastName}, Status: ${status}`);
+    
+    // Optionnel : Réinitialiser les champs du formulaire
+    document.getElementById('firstName').value = '';
+    document.getElementById('lastName').value = '';
+    document.getElementById('status').value = 'available';
+    
+    // Cacher le formulaire après soumission (si souhaité)
+    document.getElementById('formContainer').style.display = 'none';
+});

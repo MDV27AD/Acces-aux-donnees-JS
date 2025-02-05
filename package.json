@@ -1,0 +1,22 @@
+{
+  "name": "acces-aux-donnees-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "mongodb": "node ./src/MongoDB/app.js",
+    "serve_game_ez": "node ./src/MongoDB/GamEZ/app.js",
+    "serve_sport_salut": "node ./src/MongoDB/SPORT_SALUT/app.js",
+    "serve_medidonc": "node ./src/MongoDB/MEDIDONC/app.js"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.6"
+  }
+}

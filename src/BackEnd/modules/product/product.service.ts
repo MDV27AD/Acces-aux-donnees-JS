@@ -39,4 +39,16 @@ export class ProductService {
 
     return products[0];
   }
+
+  async delete(id: number) {
+    await this.db.execute(
+      `
+        DELETE FROM product
+        WHERE id = :id
+        `,
+      {
+        id,
+      }
+    );
+  }
 }

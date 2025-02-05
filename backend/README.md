@@ -1,5 +1,11 @@
 # Backend
 
+# Env
+
+```yml
+DB_URI="mysql://<user>:<password>@<host>:<port>/<database>"
+```
+
 ## Seed
 
 Install packages using

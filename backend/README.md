@@ -1,9 +1,10 @@
 # Backend
 
-# Env
+# `.env`
 
 ```toml
-DB_URI="mysql://<user>:<password>@<host>:<port>/<database>"
+DB_CENTRAL_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"
+DB_ROOT_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"
 ```
 
 ## Seed

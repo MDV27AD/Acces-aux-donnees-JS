@@ -2,7 +2,7 @@
 
 ## Seed
 
-Install package
+Install packages using
 `npm i`
 
 Execute with

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme Centrale</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container" style="position: relative; height: 500px; display: flex; flex-direction: column; align-items: center;">
+    <div class="central-platform" onclick="window.location.href='plateforme_centrale.html'" style="width: 200px; height: 200px; position: relative; top: 0px; display: flex; justify-content: center; align-items: center;"><span>Plateforme Centrale</span></div>
+
+    <div class="connections" style="position: absolute; bottom: 50px; width: 800px; display: flex; justify-content: space-between;">
+        <div class="small-platform" id="platform1" style="width: 120px; height: 120px; position: relative; display: flex; justify-content: center; align-items: center;"><span>Magasin 1</span></div>
+        <div class="small-platform" id="platform2" style="width: 120px; height: 120px; position: relative; display: flex; justify-content: center; align-items: center;"><span>Magasin 2</span></div>
+        <div class="small-platform" id="platform3" style="width: 120px; height: 120px; position: relative; display: flex; justify-content: center; align-items: center;"><span>Magasin 3</span></div>
+    </div>
+
+    <div class="line" style="height: 150px; width: 4px; left: -50px; top: 220px; transform: rotate(50deg);"></div>
+    <div class="line" style="height: 80px; width: 4px; left: 100px; top: 220px;"></div>
+    <div class="line" style="height: 150px; width: 4px; left: 250px; top: 220px; transform: rotate(-50deg);"></div>
+</div>
+</body>
+</html>

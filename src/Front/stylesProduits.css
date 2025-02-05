@@ -1,0 +1,109 @@
+body {
+    font-family: "Aldo", sans-serif;
+    font-size: 20px;
+    background-color: #262626;
+    margin: 0;
+    color: white;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Empêche le dépassement du body */
+}
+
+.edit {
+    font-family: "Aldo", sans-serif;
+    font-size: 25px;
+}
+
+.delete {
+    font-family: "Aldo", sans-serif;
+    font-size: 25px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 80%;
+    max-width: 1000px;
+    padding-top: 20px;
+    height: 90vh; /* Hauteur fixe pour éviter les déplacements */
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-height: 70vh;
+    overflow-y: auto; /* Active le défilement vertical */
+    overflow-x: hidden;
+    padding-right: 10px;
+}
+
+.product-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.product-list::-webkit-scrollbar-thumb {
+    background: #B3001B;
+    border-radius: 10px;
+}
+
+.product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #B3001B;
+    padding: 20px;
+    border-radius: 15px;
+    width: 97%;
+}
+
+.product:hover {
+    opacity: 0.6;
+}
+
+.product-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    width: 120px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #CCAD8F;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, background-color 0.2s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background-color: white;
+}
+
+.delete {
+    background-color: #B3001B;
+    color: white;
+}
+
+.delete:hover {
+    background-color: #FF4C4C;
+}

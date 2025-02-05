@@ -192,7 +192,7 @@ BEGIN
         SET MESSAGE_TEXT = 'new_supplier cannot be null.';
     END IF;
 
-    -- Checking that the requested product exists
+    -- Checking if the requested product exists
     IF NOT EXISTS (SELECT * FROM `central`.`product` WHERE `id` = modified_product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
@@ -223,6 +223,42 @@ BEGIN
         `id_category`   = category_id,
         `id_supplier`   = supplier_id
     WHERE `id` = modified_product_id;
+END $$
+
+CREATE PROCEDURE `modify_supplier`(
+    IN `modified_supplier_id` INT UNSIGNED,
+    IN `new_name` VARCHAR(255),
+    IN `new_status` ENUM('active', 'inactive')
+)
+NOT DETERMINISTIC
+MODIFIES SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Checking parameters
+    IF modified_supplier_id = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'modified_supplier_id cannot be null.';
+    END IF;
+    IF new_name = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'new_name cannot be null.';
+    END IF;
+    IF new_status != 'active' AND new_status != 'inactive' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Invalid new_status : "active" or "inactive" expected.';
+    END IF;
+
+    -- Checking if the requested supplier exists
+    IF NOT EXISTS (SELECT * FROM `central`.`supplier` WHERE `id` = modified_supplier_id LIMIT 1) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The requested supplier does not exist.';
+    END IF;
+
+    -- Updating the supplier
+    UPDATE `central`.`supplier` SET
+        `name` = new_name,
+        `status` = new_status
+    WHERE `id` = modified_supplier_id;
 END $$
 
 DELIMITER ;
@@ -275,4 +311,5 @@ DELIMITER ;
 CREATE USER 'central_user'@'localhost' IDENTIFIED BY 'NBFR5678IOùm:LK?NIBO87TIGYO8-rod(tyrfo-)';
 GRANT EXECUTE ON PROCEDURE `central`.`add_product` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`modify_product` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`modify_supplier` TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

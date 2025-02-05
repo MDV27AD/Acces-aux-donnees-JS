@@ -29,11 +29,11 @@ export class ProductService {
     return products;
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
     const [products] = await this.db.execute(
       `${SELECT}
-            WHERE p.product_id = ?
-            GROUP BY p.product_id`,
+            WHERE p.id = ?
+            GROUP BY p.id`,
       [id]
     );
 

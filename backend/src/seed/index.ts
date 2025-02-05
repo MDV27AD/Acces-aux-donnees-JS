@@ -1,13 +1,37 @@
 import mysql, { Connection } from "mysql2/promise";
 import dotenv from "dotenv";
 import { seedProducts } from "./products";
+import { faker } from "@faker-js/faker/locale/fr";
+import { seedDistributors } from "./distributors";
+import { Category, Distributor, Supplier } from "./types";
 
 dotenv.config();
 
-const dbUri = process.env.DB_URI;
-if (!dbUri) throw "Missing DB_URI";
+const distributors: Distributor[] = [
+  { name: "SPORT SALUT", categories: ["Sport", "Sport Sain"] },
+  { name: "GamEZ", categories: ["Jeu vidéo", "Jeu de société"] },
+  { name: "MEDIDONC", categories: ["Sport Sain", "Santé"] },
+];
 
-const pool = mysql.createPool(dbUri);
+const suppliers: Supplier[] = faker.helpers.multiple(faker.company.name, {
+  count: { min: 15 - 10, max: 20 - 10 },
+});
+
+const categories: Category[] = [
+  "Sport",
+  "Sport Sain",
+  "Santé",
+  "Jeu vidéo",
+  "Jeu de société",
+  ...faker.helpers.multiple(faker.commerce.department, { count: 5 }),
+];
+
+const getDatabaseConnection = async (): Promise<Connection> => {
+  const dbUri = process.env.DB_URI;
+  if (!dbUri) throw "Missing DB_URI";
+
+  return mysql.createConnection(dbUri);
+};
 
 const truncateTables = async (conn: Connection) => {
   await conn.query("SET FOREIGN_KEY_CHECKS = 0;");
@@ -24,22 +48,24 @@ const truncateTables = async (conn: Connection) => {
 };
 
 const seed = async () => {
-  const conn = await pool.getConnection();
+  const conn = await getDatabaseConnection();
   try {
     console.log("🔮 Truncating tables...");
     await truncateTables(conn);
 
     console.log("🌱 Seeding database...");
-    const [productsCount, suppliersCount] = await seedProducts(conn);
+
+    const products = await seedProducts(conn, suppliers, categories);
+    await seedDistributors(conn, distributors);
 
     console.log(
-      `🎉 Seeding complete! Generated a total of 🛒 ${productsCount} products for 🚚 ${suppliersCount} suppliers`
+      `🎉 Seeding complete! Generated a total of 🛒 ${products.length} products for 🚚 ${suppliers.length} suppliers`
     );
   } catch (error) {
     console.error("❌ Seeding failed:", error);
   }
 
-  conn.release();
+  conn.destroy();
   process.exit();
 };
 

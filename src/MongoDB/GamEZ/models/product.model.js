@@ -12,7 +12,7 @@ const ProductSchema = new Schema(
             product_description: {type: String},
             nom_fournisseur: {type: String},
             product_price: {type: Number, required: true},
-            product_status: {type: String, enum: ['available', 'unavailable'], default: 'available '}
+            product_status: {type: String, enum: ['available', 'unavailable'], default: 'available'}
         },
         seller: {
             seller_name: {type: String, required: true},

@@ -11,7 +11,7 @@ const ProductSchema = new Schema(
         description_produit: {type: String},
         nom_fournisseur: {type: String},
         prix: {type: Number, required: true},
-        en_stock: {type: String, enum: ['Oui', 'Non'], default: 'Oui '}
+        en_stock: {type: String, enum: ['Oui', 'Non'], default: 'Oui'}
     },
     {
         timestamps: true,

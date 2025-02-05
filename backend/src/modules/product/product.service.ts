@@ -26,7 +26,7 @@ export class ProductService {
     return products.map(this.formatProduct);
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const [rows] = await this.db.execute(
       `SELECT 
               p.product_id, 

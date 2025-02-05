@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
+import { FindOneParams } from "./params/find-one.params";
 import { ProductService } from "./product.service";
 
 @Controller("product")
@@ -11,7 +12,7 @@ export class ProductController {
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.productService.findOne(+id);
+  findOne(@Param() params: FindOneParams) {
+    return this.productService.findOne(params.id);
   }
 }

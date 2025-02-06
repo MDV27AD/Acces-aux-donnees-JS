@@ -1,19 +1,27 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import Express from "express";
-import "./config";
-import { pool } from "./database";
+import { createPool } from "mysql2/promise";
+import { getDatabaseConfig } from "./database";
 import modules from "./modules";
 
-const port = process.env.PORT || 3000;
+const port = process.env.BACKEND_PORT || 3000;
 const app = Express();
 
-modules.forEach((module) => {
-  const { path, router } = module(pool);
+function run() {
+  const pool = createPool(getDatabaseConfig("app"));
 
-  app.use(path, router);
+  modules.forEach((module) => {
+    const { path, router } = module(pool);
 
-  console.log(`⚡ Served module ${path}`);
-});
+    app.use(path, router);
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+    console.log(`⚡ Served module ${path}`);
+  });
+
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+run();

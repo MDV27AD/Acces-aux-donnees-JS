@@ -1,5 +1,5 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
-import { ResultPromise } from "src/BackEnd/types";
+import { ResultPromise } from "../../types";
 
 interface Product {
   sku: string;
@@ -7,7 +7,7 @@ interface Product {
   serial_number: number;
   description: string;
   price: number;
-  status: "";
+  status: "available" | "out_of_stock";
   supplier: string;
   category: string;
 }

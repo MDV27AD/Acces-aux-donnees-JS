@@ -2,6 +2,7 @@ import { Connection, RowDataPacket } from "mysql2/promise";
 import { ResultPromise } from "../types";
 
 interface Product {
+  id: number;
   sku: string;
   name: string;
   serial_number: number;

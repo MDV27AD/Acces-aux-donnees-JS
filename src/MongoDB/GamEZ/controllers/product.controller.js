@@ -8,7 +8,7 @@ export const createProduct = async (req, res) => {
     if (['jeu vidéo','jeu vidéos','jeu de société'].includes(category)){
         const data = {
             product : {product_sku, product_serial_number, product_name, product_description
-                , product_price: price + (price * (category === 'jeu vidéo' && 10 || 15) / 100)},
+                , product_price: parseFloat(price) + (price * (category.includes('jeu vidéo') && 10 || 15)/100)},
             seller : {seller_name, seller_creation_date}
         }
         // Verify if product exists
@@ -19,7 +19,7 @@ export const createProduct = async (req, res) => {
                     productFound[dataKey] = data[dataKey]
                 }
                 // Return the updated product
-                return res.status(201).json({message: 'Product updated successfully', product: productFound.save()})
+                return res.status(201).json({message: 'Product updated successfully', product: await productFound.save()})
             }
             return res.status(400).json({
                 message: `A product with serial number ${product_serial_number} exists.`,
@@ -29,7 +29,7 @@ export const createProduct = async (req, res) => {
         // Create new product
         const newProduct = await new Product(data)
         // Return the newly created product
-        return res.status(201).json({message: 'Product created successfully', product: newProduct.save()})
+        return res.status(201).json({message: 'Product created successfully', product: await newProduct.save()})
     }
     return res.status(400).json({ message: 'Invalid category' })
 }

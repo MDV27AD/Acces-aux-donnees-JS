@@ -78,7 +78,12 @@ export const seedDistributors = async (conn: Connection) => {
       ON p.id_category = c.id
       `);
 
-    if (distributor.name !== "SPORT SALUT") continue;
+    console.log(
+      `🥭 Deleting products from distributor's mongo db:`,
+      distributor.name
+    );
+
+    await fetch(distributor.mongoUrl, { method: "DELETE" });
 
     const distributorProducts = products.filter((p) =>
       distributor.categories.includes(p.category)
@@ -94,13 +99,11 @@ export const seedDistributors = async (conn: Connection) => {
         stocked: product.status === "available" ? true : false,
       };
 
-      const res = await fetch(distributor.mongoUrl, {
+      await fetch(distributor.mongoUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(mongoProduct),
       });
-
-      console.log(product.category, await res.json());
     }
 
     console.log(

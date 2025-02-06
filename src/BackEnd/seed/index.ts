@@ -14,7 +14,7 @@ export const distributors: Distributor[] = [
   {
     name: "SPORT SALUT",
     categories: ["Sport", "Sport Sain"],
-    mongoUrl: "http://localhost:3061/products", // getDistributorMongoUrl("sport-salut"),
+    mongoUrl: getDistributorMongoUrl("sport-salut"),
   },
   {
     name: "GamEZ",

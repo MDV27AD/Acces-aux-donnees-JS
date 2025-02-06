@@ -44,6 +44,8 @@ MEDIDONC_PORT=3062
 
 DB_CENTRAL_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"
 DB_ROOT_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"
+
+BACKEND_PORT=3000
 ```
 
 ### GameEz

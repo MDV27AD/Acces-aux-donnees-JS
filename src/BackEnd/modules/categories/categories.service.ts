@@ -4,15 +4,12 @@ interface Category {
   name: string;
 }
 
-const SELECT_CATEGORY = `
-SELECT name
-FROM category
-`;
-
 export default (conn: Connection) => {
   async function findAll(): Promise<[Category[], true] | [null, false]> {
     try {
-      const [categories] = await conn.execute<RowDataPacket[]>(SELECT_CATEGORY);
+      const [[categories]] = await conn.execute<RowDataPacket[][]>(
+        `CALL get_all_categories()`
+      );
 
       return [categories as Category[], true];
     } catch (err) {

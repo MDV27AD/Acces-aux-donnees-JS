@@ -1,11 +1,12 @@
 export interface Distributor {
   name: string;
-  categories: string[];
+  categories: Category[];
+  mongoUrl: string;
 }
 
 export interface Product {
-  supplier: string;
-  category: string;
+  supplier: Supplier;
+  category: Category;
   sku: string;
   serialNumber: number;
   name: string;

@@ -8,17 +8,34 @@ import { getDatabaseConfig } from "../database";
 
 dotenv.config();
 
-const distributors: Distributor[] = [
-  { name: "SPORT SALUT", categories: ["Sport", "Sport Sain"] },
-  { name: "GamEZ", categories: ["Jeu vidéo", "Jeu de société"] },
-  { name: "MEDIDONC", categories: ["Sport Sain", "Santé"] },
+const getDistributorMongoUrl = (identifier: string) =>
+  `https://acces-aux-donnees-js-mongodb-${identifier}.onrender.com/products`;
+export const distributors: Distributor[] = [
+  {
+    name: "SPORT SALUT",
+    categories: ["Sport", "Sport Sain"],
+    mongoUrl: "http://localhost:3061/products", // getDistributorMongoUrl("sport-salut"),
+  },
+  {
+    name: "GamEZ",
+    categories: ["Jeu vidéo", "Jeu de société"],
+    mongoUrl: getDistributorMongoUrl("gameez"),
+  },
+  {
+    name: "MEDIDONC",
+    categories: ["Sport Sain", "Santé"],
+    mongoUrl: getDistributorMongoUrl("medidonc"),
+  },
 ];
 
-const suppliers: Supplier[] = faker.helpers.multiple(faker.company.name, {
-  count: { min: 15, max: 20 },
-});
+export const suppliers: Supplier[] = faker.helpers.multiple(
+  faker.company.name,
+  {
+    count: { min: 15, max: 20 },
+  }
+);
 
-const categories: Category[] = [
+export const categories: Category[] = [
   "Sport",
   "Sport Sain",
   "Santé",
@@ -49,12 +66,8 @@ const seed = async () => {
 
     console.log("🌱 Seeding database...");
 
-    const products = await seedProducts(conn, suppliers, categories);
-    await seedDistributors(conn, distributors);
-
-    console.log(
-      `🎉 Seeding complete! Generated a total of 🛒 ${products.length} products for 🚚 ${suppliers.length} suppliers`
-    );
+    await seedProducts(conn);
+    await seedDistributors(conn);
   } catch (error) {
     console.error("❌ Seeding failed:", error);
   }

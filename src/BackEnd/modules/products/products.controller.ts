@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { Connection } from "mysql2/promise";
 import { sendMessage } from "../../messages";
 import productsService from "./products.service";
+import * as v from "valibot";
 
 export default (conn: Connection) => {
   const router = Router();
@@ -10,6 +11,7 @@ export default (conn: Connection) => {
   router.get("/", findAll);
   router.get("/:id", findOne);
   router.delete("/:id", deleteProduct);
+  router.put("/:id", updateProduct);
 
   async function findAll(req: Request, res: Response) {
     let limit: number = 0;
@@ -55,6 +57,10 @@ export default (conn: Connection) => {
     }
 
     res.send();
+  }
+
+  async function updateProduct(req: Request<{ id: string }>, res: Response) {
+    const id = v.safeParse(v.number(), req.params.id);
   }
 
   return {

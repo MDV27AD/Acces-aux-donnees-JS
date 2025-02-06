@@ -40,6 +40,11 @@ export const getAllProducts = async (_req, res) => {
 }
 
 export const getAvailableProducts = async (_req, res) => {
-    const products = await Product.find({ product: {product_status: 'available'} })
+    const products = await Product.find({ 'product.product_status': 'available' })
     res.status(200).json(products)
+}
+
+export const deleteAllProducts = async (_req, res) => {
+    await Product.deleteMany({})
+    res.status(200).json({message: 'All Products deleted successfully'})
 }

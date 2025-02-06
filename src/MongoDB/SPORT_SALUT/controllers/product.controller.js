@@ -11,7 +11,7 @@ export const createProduct = async (req, res) => {
             return res.status(400).json({ message: `A product with serial number ${serial_number_produit} exists.`, product: productFound})
         // Create new product
         const product = await Product.create({ sku_produit, serial_number_produit, nom_produit
-            , description_produit, nom_fournisseur, prix: price + (price * 20 / 100) })
+            , description_produit, nom_fournisseur, prix: parseFloat(price) + (price * 20 / 100) })
         // Return the newly created product
         return res.status(201).json(product)
     }

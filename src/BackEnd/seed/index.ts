@@ -9,7 +9,7 @@ import { getDatabaseConfig } from "../database";
 dotenv.config();
 
 const getDistributorMongoUrl = (identifier: string) =>
-  `https://acces-aux-donnees-js-mongodb-${identifier}.onrender.com/products`;
+  `https://acces-aux-donnees-js-${identifier}.onrender.com/products`;
 export const distributors: Distributor[] = [
   {
     name: "SPORT SALUT",
@@ -19,7 +19,7 @@ export const distributors: Distributor[] = [
   {
     name: "GamEZ",
     categories: ["Jeu vidéo", "Jeu de société"],
-    mongoUrl: getDistributorMongoUrl("gameez"),
+    mongoUrl: getDistributorMongoUrl("mongodb-gameez"),
   },
   {
     name: "MEDIDONC",

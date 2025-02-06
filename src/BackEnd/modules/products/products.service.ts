@@ -65,8 +65,21 @@ export default (conn: Connection) => {
     return [null, false];
   }
 
+  async function deleteProduct(id: number): ResultPromise<null> {
+    try {
+      await conn.execute("CALL delete_product(:id)", { id });
+
+      return [null, true];
+    } catch (err) {
+      console.error(`Error while deleting product with id "${id}":`, err);
+    }
+
+    return [null, false];
+  }
+
   return {
     findAll,
     findOne,
+    deleteProduct,
   };
 };

@@ -4,7 +4,7 @@ export const createProduct = async (req, res) => {
     const { sku: p_sku, name: p_name, description: p_description, updatedAt: p_last_update, supplierId: id
         , supplierName: name, supplierCreatedAt: creation_date, price: p_price, serialNumber: p_serial_number, category } = req.body
     // Verify if category is valid
-    if (['santé','sport sain'].includes(category?.toLowerCase())){
+    if (['santé','sport sain', 'médical'].includes(category?.toLowerCase())){
         // Verify if product exists
         const productFound = await Product.findOne({p_serial_number})
         if (productFound)

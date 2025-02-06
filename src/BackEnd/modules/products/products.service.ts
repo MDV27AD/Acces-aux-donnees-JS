@@ -1,7 +1,9 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
 import { ResultPromise } from "../types";
+import { UpdateProductData } from "./schemas/update-product.schema";
 
 interface Product {
+  id: number;
   sku: string;
   name: string;
   serial_number: number;
@@ -78,9 +80,43 @@ export default (conn: Connection) => {
     return [null, false];
   }
 
+  async function updateProduct(
+    id: number,
+    data: UpdateProductData
+  ): ResultPromise<null> {
+    try {
+      await conn.execute(
+        `
+        CALL modify_product(
+          :id,
+          :sku,
+          :serialNumber,
+          :name,
+          :description,
+          :price,
+          :status,
+          :category,
+          :supplier
+        )
+        `,
+        {
+          id,
+          ...data,
+        }
+      );
+
+      return [null, true];
+    } catch (err) {
+      console.error(`Error while updating product with id "${id}":`, err, data);
+    }
+
+    return [null, false];
+  }
+
   return {
     findAll,
     findOne,
     deleteProduct,
+    updateProduct,
   };
 };

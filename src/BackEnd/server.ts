@@ -6,11 +6,10 @@ import Express from "express";
 import { createPool } from "mysql2/promise";
 import { getDatabaseConfig } from "./database";
 import modules from "./modules";
-
-const port = process.env.BACKEND_PORT || 3000;
-
+import bodyParser from "body-parser";
 
 function run() {
+  const port = process.env.BACKEND_PORT || 3000;
   const app = Express();
   const pool = createPool(getDatabaseConfig("app"));
 
@@ -22,6 +21,7 @@ function run() {
       maxAge: 3600,
     })
   );
+  app.use(bodyParser.json());
 
   modules.forEach((module) => {
     const { path, router } = module(pool);

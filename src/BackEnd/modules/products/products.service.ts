@@ -38,7 +38,7 @@ ON s.id = p.id_supplier
 export default (conn: Connection) => {
   async function findAll(): ResultPromise<Product[]> {
     try {
-      const [products] = await conn.execute<RowDataPacket[]>(
+      const [[products]] = await conn.execute<RowDataPacket[][]>(
         `CALL get_all_products()`
       );
 
@@ -52,7 +52,7 @@ export default (conn: Connection) => {
 
   async function findOne(id: number): ResultPromise<Product> {
     try {
-      const [[product]] = await conn.execute<RowDataPacket[]>(
+      const [[[product]]] = await conn.execute<RowDataPacket[][]>(
         `CALL get_product(:id)`,
         { id }
       );

@@ -4,16 +4,12 @@ interface Distributor {
   name: string;
 }
 
-const SELECT_DISTRIBUTOR = `
-SELECT name
-FROM distributor
-`;
-
 export default (conn: Connection) => {
   async function findAll(): Promise<[Distributor[], true] | [null, false]> {
     try {
-      const [distributors] =
-        await conn.execute<RowDataPacket[]>(SELECT_DISTRIBUTOR);
+      const [[distributors]] = await conn.execute<RowDataPacket[][]>(
+        `CALL get_all_distributors()`
+      );
 
       return [distributors as Distributor[], true];
     } catch (err) {

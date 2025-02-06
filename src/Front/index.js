@@ -1,7 +1,6 @@
 async function fetchProducts() {
     try {
         const response = await fetch("http://localhost:3000/product");
-        console.log(response);
         const products = await response.json();
 
         const productList = document.querySelector(".product-list");
@@ -70,7 +69,7 @@ document.querySelector('.addProductButton').addEventListener('click', function()
     fetch('http://acces-aux-donnees-js-medidonc.onrender.com/products')
     .then(response => response.json())
     .then(data => {
-        console.log(data);      // données récupérées
+        // données récupérées
     })
     .catch(error => {
         console.error('Erreur lors de la récupération des données:', error);
@@ -87,14 +86,12 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
     const data = {
         name: document.getElementById('name').value,                               // nom du produit
         supplierName: document.getElementById('supplierName').value,            // nom du fournisseur
-        supplierId: document.getElementById('supplierId').value,                // id SQL du fournisseur
-        serialNumber: document.getElementById('serialNumber').value,            // numéro de série 
+        serial_number: document.getElementById('serialNumber').value,            // numéro de série 
         sku: document.getElementById('sku').value,                              // SKU du produit
         price: document.getElementById('price').value,
         description: document.getElementById('description').value,
         status: document.getElementById('status').value,
         category: document.getElementById('category').value,                    // nom de la catégorie    
-        supplierCreatedAt: document.getElementById('supplierCreatedAt').value,  // date de création
     };
 
     fetch('http://acces-aux-donnees-js-medidonc.onrender.com/products', {
@@ -119,7 +116,8 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
 // suppression du produit
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete')) {
-        const productId = event.target.getAttribute('data-id');         // on récupère l'id du produit 
+        const productId = event.target.getAttribute('data-id'); 
+        const productElement = event.target.closest('.product');
 
         if (confirm("Voulez-vous vraiment supprimer ce produit ?")) {
             fetch(`http://localhost:3000/product/${productId}`, {
@@ -131,22 +129,48 @@ document.addEventListener('click', function(event) {
                 }
                 return response.text(); 
             })
-            .then(text => {
-                console.log('Réponse brute:', text); 
-                try {
-                    console.log('Produit supprimé!');
+            .then(() => {
+                productElement.classList.add('deleting'); 
+                setTimeout(() => {
+                    productElement.remove();
                     refreshData();
-                } catch (error) {
-                    console.error('Erreur de parsing JSON:', error);
-                }
+                }, 1000);
             })
             .catch(error => {
                 console.error('Erreur:', error);
-            });            
+            });
         }
     }
 });
 
+// on met à jour le produit en question
+function updateProduct(productId) {
+    const updatedProduct = {
+        sku: document.getElementById('sku').value,
+        serial_number: document.getElementById('serialNumber').value,
+        name: document.getElementById('name').value,
+        description: document.getElementById('description').value,
+        price: document.getElementById('price').value,
+        status: document.getElementById('status').value,
+        category: document.getElementById('category').value,
+        supplier: document.getElementById('supplierName').value
+    };
+
+    fetch(`http://localhost:3000/product/${productId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedProduct)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Produit mis à jour:', data);
+        refreshData(); 
+        document.getElementById('formContainer').style.display = 'none';
+    })
+    .catch(error => console.error('Erreur lors de la mise à jour du produit:', error));
+}
 
 // mise à jour du produit 
 document.addEventListener('click', function(event) {
@@ -157,9 +181,9 @@ document.addEventListener('click', function(event) {
             .then(response => response.json())
             .then(product => {
                 document.getElementById('name').value = product.name;
-                document.getElementById('supplierName').value = product.supplierName;
+                document.getElementById('supplierName').value = product.supplier;
                 document.getElementById('supplierId').value = product.supplierId;
-                document.getElementById('serialNumber').value = product.serialNumber;
+                document.getElementById('serialNumber').value = product.serial_number;
                 document.getElementById('sku').value = product.sku;
                 document.getElementById('price').value = product.price;
                 document.getElementById('description').value = product.description;
@@ -171,41 +195,8 @@ document.addEventListener('click', function(event) {
 
                 document.getElementById('submitForm').onclick = function(event) {
                     event.preventDefault();
-                    updateProduct(productId);
                 };
             })
             .catch(error => console.error('Erreur lors de la récupération du produit:', error));
     }
 });
-
-function updateProduct(productId) {
-    const updatedData = {
-        name: document.getElementById('name').value,
-        supplierName: document.getElementById('supplierName').value,
-        supplierId: document.getElementById('supplierId').value,
-        serialNumber: document.getElementById('serialNumber').value,
-        sku: document.getElementById('sku').value,
-        price: parseInt(document.getElementById('price').value),    
-        description: document.getElementById('description').value,
-        status: document.getElementById('status').value,
-        category: document.getElementById('category').value,
-        supplierCreatedAt: document.getElementById('supplierCreatedAt').value
-    };
-
-    fetch(`http://localhost:3000/${productId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updatedData)
-    })
-    .then(response => response.json())
-    .then(result => {
-        alert('Produit mis à jour avec succès !');
-        document.getElementById('formContainer').style.display = 'none';
-    })
-    .catch(error => {
-        console.error('Erreur lors de la mise à jour:', error);
-        alert('Échec de la mise à jour.');
-    });
-}

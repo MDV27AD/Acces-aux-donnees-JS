@@ -12,18 +12,27 @@ body {
     overflow: hidden; /* Empêche le dépassement du body */
 }
 
-.addProductButton {
-    position: absolute;  /* Positionne le bouton par rapport au body */
-    top: 20px;  /* Espace depuis le haut */
-    left: 20px;  /* Espace depuis la gauche */
+.refreshButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
     width: 40px;
     height: 40px;
-    background: url('img/add.png') no-repeat center center;
+    background: url('img/refresh.png') no-repeat center center;
     background-size: cover;
     border: none;
     cursor: pointer;
     background-color: #B3001B;
     background-size: 30px 30px;
+}
+
+.timer {
+    position: absolute;
+    top: 25px; /* Ajuste la position en fonction du besoin */
+    left: 65px; /* Décalage à côté du bouton */
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
 }
 
 .edit {

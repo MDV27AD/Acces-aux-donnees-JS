@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const updateProductSchema = z.object({
   sku: z.string(),
-  serialNumber: z.number(),
+  serial_number: z.number(),
   name: z.string(),
   description: z.string(),
   price: z.number(),

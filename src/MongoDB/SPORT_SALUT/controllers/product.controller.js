@@ -2,11 +2,12 @@ import { Product } from '../models/product.model.js'
 
 export const createProduct = async (req, res) => {
     const { sku: sku_produit, name: nom_produit, description: description_produit, serialNumber: serial_number_produit
-        , sellerName: nom_fournisseur, price, category, update, stocked } = req.body
+        , sellerName: nom_fournisseur, price, category: category_produit, update, stocked } = req.body
+    const category = category_produit?.toLowerCase()
     // Verify if the category is sport
-    if (category?.toLowerCase()?.includes('sport')){
+    if (category?.includes('sport')){
         const data = { sku_produit, serial_number_produit, nom_produit, description_produit, nom_fournisseur
-            , prix: parseFloat(price) + (price * 20 / 100), en_stock: stocked && 'Oui' || 'Non' }
+            , category_produit, prix: parseFloat(price) + (price * 20 / 100), en_stock: stocked && 'Oui' || 'Non' }
         // Verify if product exists
         const productFound = await Product.findOne({serial_number_produit})
         if (productFound) {

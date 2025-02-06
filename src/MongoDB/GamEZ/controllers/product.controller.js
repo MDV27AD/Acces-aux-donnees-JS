@@ -2,12 +2,13 @@ import { Product } from '../models/product.model.js'
 
 export const createProduct = async (req, res) => {
     const { serialNumber: product_serial_number, sku: product_sku, name: product_name, description: product_description
-        , supplierName: seller_name, supplierCreatedAt: seller_creation_date, price, stocked, update } = req.body
-    const category = req.body['category']?.toLowerCase()
+        , supplierName: seller_name, supplierCreatedAt: seller_creation_date, category: product_category, price
+        , stocked, update } = req.body
+    const category = product_category?.toLowerCase()
     // Verify if category is valid
     if (['jeu vidéo','jeu vidéos','jeu de société'].includes(category)){
         const data = {
-            product : {product_sku, product_serial_number, product_name, product_description
+            product : {product_sku, product_serial_number, product_name, product_description, product_category
                 , product_price: parseFloat(price) + (price * (category.includes('jeu vidéo') && 10 || 15)/100)},
             product_status: stocked && 'available' || 'unavailable', seller : {seller_name, seller_creation_date}
         }

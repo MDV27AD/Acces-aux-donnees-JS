@@ -11,6 +11,7 @@ const ProductSchema = new Schema(
             product_name: {type: String, required: true},
             product_description: {type: String},
             nom_fournisseur: {type: String},
+            product_category: {type: String},
             product_price: {type: Number, required: true},
             product_status: {type: String, enum: ['available', 'unavailable'], default: 'available'}
         },

@@ -10,6 +10,7 @@ const ProductSchema = new Schema(
         nom_produit: {type: String, required: true},
         description_produit: {type: String},
         nom_fournisseur: {type: String},
+        category_produit: {type: String},
         prix: {type: Number, required: true},
         en_stock: {type: String, enum: ['Oui', 'Non'], default: 'Oui'}
     },

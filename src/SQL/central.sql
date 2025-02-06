@@ -102,21 +102,21 @@ BEGIN
     END IF;
 
     -- Creating the new category if it doesn't exist
-    SELECT `id` INTO category_id FROM `central`.`category` WHERE `name` = new_category LIMIT 1;
+    SELECT `id` INTO category_id FROM `category` WHERE `name` = new_category LIMIT 1;
     IF category_id IS NULL THEN
-        INSERT INTO `central`.`category` (`name`) VALUES (new_category);
-        SELECT `id` INTO category_id FROM `central`.`category` WHERE `name` = new_category LIMIT 1;
+        INSERT INTO `category` (`name`) VALUES (new_category);
+        SELECT `id` INTO category_id FROM `category` WHERE `name` = new_category LIMIT 1;
     END IF;
 
     -- Creating the new supplier if it doesn't exist
-    SELECT `id` INTO supplier_id FROM `central`.`supplier` WHERE `name` = new_supplier LIMIT 1;
+    SELECT `id` INTO supplier_id FROM `supplier` WHERE `name` = new_supplier LIMIT 1;
     IF supplier_id IS NULL THEN
-        INSERT INTO `central`.`supplier` (`name`) VALUES (new_supplier);
-        SELECT `id` INTO supplier_id FROM `central`.`supplier` WHERE `name` = new_supplier LIMIT 1;
+        INSERT INTO `supplier` (`name`) VALUES (new_supplier);
+        SELECT `id` INTO supplier_id FROM `supplier` WHERE `name` = new_supplier LIMIT 1;
     END IF;
 
     -- Creating the new product
-    INSERT INTO `central`.`product` (
+    INSERT INTO `product` (
         `sku`,
         `serial_number`,
         `name`,
@@ -193,27 +193,27 @@ BEGIN
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `central`.`product` WHERE `id` = modified_product_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = modified_product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
 
     -- Creating the new category if it doesn't exist
-    SELECT `id` INTO category_id FROM `central`.`category` WHERE `name` = new_category LIMIT 1;
+    SELECT `id` INTO category_id FROM `category` WHERE `name` = new_category LIMIT 1;
     IF category_id IS NULL THEN
-        INSERT INTO `central`.`category` (`name`) VALUES (new_category);
-        SELECT `id` INTO category_id FROM `central`.`category` WHERE `name` = new_category LIMIT 1;
+        INSERT INTO `category` (`name`) VALUES (new_category);
+        SELECT `id` INTO category_id FROM `category` WHERE `name` = new_category LIMIT 1;
     END IF;
 
     -- Creating the new supplier if it doesn't exist
-    SELECT `id` INTO supplier_id FROM `central`.`supplier` WHERE `name` = new_supplier LIMIT 1;
+    SELECT `id` INTO supplier_id FROM `supplier` WHERE `name` = new_supplier LIMIT 1;
     IF supplier_id IS NULL THEN
-        INSERT INTO `central`.`supplier` (`name`) VALUES (new_supplier);
-        SELECT `id` INTO supplier_id FROM `central`.`supplier` WHERE `name` = new_supplier LIMIT 1;
+        INSERT INTO `supplier` (`name`) VALUES (new_supplier);
+        SELECT `id` INTO supplier_id FROM `supplier` WHERE `name` = new_supplier LIMIT 1;
     END IF;
 
     -- Updating the product
-    UPDATE `central`.`product` SET
+    UPDATE `product` SET
         `sku`           = new_sku,
         `serial_number` = new_serial_number,
         `name`          = new_name,
@@ -249,13 +249,13 @@ BEGIN
     END IF;
 
     -- Checking if the requested supplier exists
-    IF NOT EXISTS (SELECT * FROM `central`.`supplier` WHERE `id` = modified_supplier_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `supplier` WHERE `id` = modified_supplier_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested supplier does not exist.';
     END IF;
 
     -- Updating the supplier
-    UPDATE `central`.`supplier` SET
+    UPDATE `supplier` SET
         `name` = new_name,
         `status` = new_status
     WHERE `id` = modified_supplier_id;
@@ -273,14 +273,14 @@ BEGIN
     END IF;
 
     -- Checking if the requested supplier exists
-    IF NOT EXISTS (SELECT * FROM `central`.`supplier` WHERE `id` = deleted_supplier_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `supplier` WHERE `id` = deleted_supplier_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested supplier does not exist.';
     END IF;
 
     -- Deleting the supplier and its products
-    DELETE FROM `central`.`product` WHERE `id_supplier` = deleted_supplier_id;
-    DELETE FROM `central`.`supplier` WHERE `id` = deleted_supplier_id;
+    DELETE FROM `product` WHERE `id_supplier` = deleted_supplier_id;
+    DELETE FROM `supplier` WHERE `id` = deleted_supplier_id;
 END $$
 
 CREATE PROCEDURE `delete_product`(IN `deleted_product_id` INT UNSIGNED)
@@ -295,13 +295,13 @@ BEGIN
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `central`.`product` WHERE `id` = deleted_product_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = deleted_product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
 
     -- Deleting the product
-    DELETE FROM `central`.`product` WHERE `id` = deleted_product_id;
+    DELETE FROM `product` WHERE `id` = deleted_product_id;
 END $$
 
 CREATE PROCEDURE `get_all_products`()
@@ -337,7 +337,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `central`.`product` WHERE `id` = product_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
@@ -380,7 +380,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested distributor exists
-    IF NOT EXISTS (SELECT * FROM `central`.`distributor` WHERE `id` = distributor_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested distributor does not exist.';
     END IF;
@@ -410,7 +410,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested category exists
-    IF NOT EXISTS (SELECT * FROM `central`.`category` WHERE `id` = category_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `category` WHERE `id` = category_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested category does not exist.';
     END IF;
@@ -431,7 +431,7 @@ BEGIN
     -- Forbidding the created_at field to be modified
     IF NEW.created_at <> OLD.created_at THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESAGE_TEXT = 'You cannot change created_at time of an item.';
+        SET MESSAGE_TEXT = 'You cannot change the created_at time of an item.';
     END IF;
 
     -- Updating the updated_at field
@@ -445,7 +445,7 @@ BEGIN
     -- Forbidding the created_at field to be modified
     IF NEW.created_at <> OLD.created_at THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'You cannot change created_at time of an item.';
+        SET MESSAGE_TEXT = 'You cannot change the created_at time of an item.';
     END IF;
 
     -- Updating the updated_at field
@@ -459,7 +459,7 @@ BEGIN
     -- Forbidding the created_at field to be modified
     IF NEW.created_at <> OLD.created_at THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'You cannot change created_at time of an item.';
+        SET MESSAGE_TEXT = 'You cannot change the created_at time of an item.';
     END IF;
 END //
 
@@ -467,15 +467,15 @@ DELIMITER ;
 
 -- Users
 CREATE USER 'central_user'@'localhost' IDENTIFIED BY 'NBFR5678IOùm:LK?NIBO87TIGYO8-rod(tyrfo-)';
-GRANT EXECUTE ON PROCEDURE `central`.`get_all_products` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`get_product` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`add_product` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`modify_product` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`delete_product` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`modify_supplier` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`delete_supplier` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`get_all_distributors` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`get_distributor` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`get_all_categories` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`get_category` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `get_all_products` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `get_product` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `add_product` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `modify_product` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `delete_product` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `modify_supplier` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `delete_supplier` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `get_all_distributors` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `get_distributor` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `get_all_categories` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `get_category` TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

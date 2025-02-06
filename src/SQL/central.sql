@@ -359,6 +359,36 @@ BEGIN
     WHERE `product`.`id` = product_id;
 END $$
 
+CREATE PROCEDURE `get_all_distributors`()
+NOT DETERMINISTIC
+READS SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Getting all distributors list and their informations
+    SELECT * FROM `distributor`;
+END $$
+
+CREATE PROCEDURE `get_distributor`(IN `distributor_id` INT UNSIGNED)
+NOT DETERMINISTIC
+READS SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Checking parameters
+    IF distributor_id = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'distributor_id cannot be null.';
+    END IF;
+
+    -- Checking if the requested distributor exists
+    IF NOT EXISTS (SELECT * FROM `central`.`distributor` WHERE `id` = distributor_id LIMIT 1) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The requested distributor does not exist.';
+    END IF;
+
+    -- Getting the distributor's informations
+    SELECT * FROM `distributor` WHERE `distributor`.`id` = distributor_id;
+END $$
+
 DELIMITER ;
 
 -- Triggers
@@ -411,7 +441,9 @@ GRANT EXECUTE ON PROCEDURE `central`.`get_all_products` TO 'central_user'@'local
 GRANT EXECUTE ON PROCEDURE `central`.`get_product` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`add_product` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`modify_product` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`delete_product` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`modify_supplier` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`delete_supplier` TO 'central_user'@'localhost';
-GRANT EXECUTE ON PROCEDURE `central`.`delete_product` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`get_all_distributors` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`get_distributor` TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

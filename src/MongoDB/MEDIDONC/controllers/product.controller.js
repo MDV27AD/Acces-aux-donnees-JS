@@ -40,3 +40,8 @@ export const getAvailableProducts = async (_req, res) => {
     const menus = await Product.findOne({ p_status: 'En stock' })
     res.status(200).json(menus)
 }
+
+export const deleteAllProducts = async (_req, res) => {
+    await Product.deleteMany({})
+    res.status(200).json({message: 'All Products deleted successfully'})
+}

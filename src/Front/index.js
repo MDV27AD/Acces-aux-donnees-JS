@@ -1,6 +1,7 @@
 async function fetchProducts() {
     try {
         const response = await fetch("http://localhost:3000/product");
+        console.log(response);
         const products = await response.json();
 
         const productList = document.querySelector(".product-list");

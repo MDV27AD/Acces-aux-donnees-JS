@@ -14,6 +14,7 @@ interface Product {
 
 const SELECT_PRODUCT = `
 SELECT 
+  p.id,
   p.sku,
   p.name, 
   p.serial_number, 

@@ -386,7 +386,37 @@ BEGIN
     END IF;
 
     -- Getting the distributor's informations
-    SELECT * FROM `distributor` WHERE `distributor`.`id` = distributor_id;
+    SELECT * FROM `distributor` WHERE `id` = distributor_id;
+END $$
+
+CREATE PROCEDURE `get_all_categories`()
+NOT DETERMINISTIC
+READS SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Getting all distributors list and their informations
+    SELECT * FROM `category`;
+END $$
+
+CREATE PROCEDURE `get_category`(IN `category_id` INT UNSIGNED)
+NOT DETERMINISTIC
+READS SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Checking parameters
+    IF category_id = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'category_id cannot be null.';
+    END IF;
+
+    -- Checking if the requested category exists
+    IF NOT EXISTS (SELECT * FROM `central`.`category` WHERE `id` = category_id LIMIT 1) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The requested category does not exist.';
+    END IF;
+
+    -- Getting the distributor's informations
+    SELECT * FROM `category` WHERE `id` = category_id;
 END $$
 
 DELIMITER ;
@@ -446,4 +476,6 @@ GRANT EXECUTE ON PROCEDURE `central`.`modify_supplier` TO 'central_user'@'localh
 GRANT EXECUTE ON PROCEDURE `central`.`delete_supplier` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`get_all_distributors` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`get_distributor` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`get_all_categories` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`get_category` TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

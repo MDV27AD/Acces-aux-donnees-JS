@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { Connection, RowDataPacket } from "mysql2/promise";
+import { Connection } from "mysql2/promise";
 import { sendMessage } from "../../messages";
 import productsService from "./products.service";
 
@@ -9,6 +9,7 @@ export default (conn: Connection) => {
 
   router.get("/", findAll);
   router.get("/:id", findOne);
+  router.delete("/:id", deleteProduct);
 
   async function findAll(req: Request, res: Response) {
     let limit: number = 0;
@@ -40,6 +41,20 @@ export default (conn: Connection) => {
     }
 
     res.json(product);
+  }
+
+  async function deleteProduct(req: Request<{ id: string }>, res: Response) {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      res.status(400).json("Invalid id param");
+    }
+
+    const [_, success] = await service.deleteProduct(id);
+    if (!success) {
+      return sendMessage(res, "internalError");
+    }
+
+    res.send();
   }
 
   return {

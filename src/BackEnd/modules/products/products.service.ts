@@ -1,5 +1,5 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
-import { ResultPromise } from "../../types";
+import { ResultPromise } from "../types";
 
 interface Product {
   sku: string;

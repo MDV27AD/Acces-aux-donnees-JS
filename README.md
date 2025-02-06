@@ -44,7 +44,7 @@ Build with `npm run back:build`
 
 Start with `npm run back:start`
 
-### Seed
+### seed
 
 Execute with `npm run back:seed`
 

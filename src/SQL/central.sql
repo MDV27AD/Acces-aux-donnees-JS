@@ -304,6 +304,61 @@ BEGIN
     DELETE FROM `central`.`product` WHERE `id` = deleted_product_id;
 END $$
 
+CREATE PROCEDURE `get_all_products`()
+NOT DETERMINISTIC
+READS SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Getting all products list and their informations
+    SELECT 
+        `product`.`id`,
+        `product`.`sku`,
+        `product`.`name`,
+        `product`.`serial_number`,
+        `product`.`description`,
+        `product`.`price`,
+        `product`.`status`,
+        `supplier`.`name` AS `supplier`,
+        `category`.`name` AS `category`
+    FROM `product`
+    LEFT JOIN `category` ON `category`.`id` = `product`.`id_category`
+    LEFT JOIN `supplier` ON `supplier`.`id` = `product`.`id_supplier`;
+END $$
+
+CREATE PROCEDURE `get_product`(IN `product_id` INT UNSIGNED)
+NOT DETERMINISTIC
+READS SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Checking parameters
+    IF product_id = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'product_id cannot be null.';
+    END IF;
+
+    -- Checking if the requested product exists
+    IF NOT EXISTS (SELECT * FROM `central`.`product` WHERE `id` = product_id LIMIT 1) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The requested product does not exist.';
+    END IF;
+
+    -- Getting the product's informations
+    SELECT 
+        `product`.`id`,
+        `product`.`sku`,
+        `product`.`name`,
+        `product`.`serial_number`,
+        `product`.`description`,
+        `product`.`price`,
+        `product`.`status`,
+        `supplier`.`name` AS `supplier`,
+        `category`.`name` AS `category`
+    FROM `product`
+    LEFT JOIN `category` ON `category`.`id` = `product`.`id_category`
+    LEFT JOIN `supplier` ON `supplier`.`id` = `product`.`id_supplier`
+    WHERE `product`.`id` = product_id;
+END $$
+
 DELIMITER ;
 
 -- Triggers
@@ -352,6 +407,8 @@ DELIMITER ;
 
 -- Users
 CREATE USER 'central_user'@'localhost' IDENTIFIED BY 'NBFR5678IOùm:LK?NIBO87TIGYO8-rod(tyrfo-)';
+GRANT EXECUTE ON PROCEDURE `central`.`get_all_products` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`get_product` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`add_product` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`modify_product` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`modify_supplier` TO 'central_user'@'localhost';

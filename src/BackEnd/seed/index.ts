@@ -10,6 +10,7 @@ dotenv.config();
 
 const getDistributorMongoUrl = (identifier: string) =>
   `https://acces-aux-donnees-js-${identifier}.onrender.com/products`;
+
 export const distributors: Distributor[] = [
   {
     name: "SPORT SALUT",

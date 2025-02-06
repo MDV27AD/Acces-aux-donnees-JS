@@ -283,6 +283,27 @@ BEGIN
     DELETE FROM `central`.`supplier` WHERE `id` = deleted_supplier_id;
 END $$
 
+CREATE PROCEDURE `delete_product`(IN `deleted_product_id` INT UNSIGNED)
+NOT DETERMINISTIC
+MODIFIES SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Checking parameters
+    IF deleted_product_id = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'deleted_product_id cannot be null.';
+    END IF;
+
+    -- Checking if the requested product exists
+    IF NOT EXISTS (SELECT * FROM `central`.`product` WHERE `id` = deleted_product_id LIMIT 1) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The requested product does not exist.';
+    END IF;
+
+    -- Deleting the product
+    DELETE FROM `central`.`product` WHERE `id` = deleted_product_id;
+END $$
+
 DELIMITER ;
 
 -- Triggers
@@ -335,4 +356,5 @@ GRANT EXECUTE ON PROCEDURE `central`.`add_product` TO 'central_user'@'localhost'
 GRANT EXECUTE ON PROCEDURE `central`.`modify_product` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`modify_supplier` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `central`.`delete_supplier` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `central`.`delete_product` TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

@@ -3,35 +3,9 @@
 Install packages using
 `npm i`
 
-## SQL
-
-Begin by create SQL Database
-
-### start
-
-Execute with `npm run sql:start`
-
-## FrontEnd
-
-### start
-
-Execute with `npm run front:start`
-
-## BackEnd
-
-### Start
-
-Execute with `npm back:start`
-
-### Seed
-
-Execute with `npm run back:seed`
-
-## MongoDB
-
 ### Env
 
-`.env`
+Setup environment variables in `.env` file
 
 ```toml
 GAME_EZ_URL_MONGODB="mongodb+srv://<user>:<password>@<cluster>/bd_lc_ad_game_ez?retryWrites=true&w=majority"
@@ -47,6 +21,34 @@ DB_ROOT_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"
 
 BACKEND_PORT=3000
 ```
+
+## SQL
+
+Begin by create SQL Database
+
+### start
+
+Execute with `npm run sql:start`
+
+## FrontEnd
+
+### start
+
+Execute with `npm run front:start`
+
+## Backend
+
+### start
+
+Build with `npm run back:build`
+
+Start with `npm run back:start`
+
+### Seed
+
+Execute with `npm run back:seed`
+
+## MongoDB
 
 ### GameEz
 

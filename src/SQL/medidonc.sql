@@ -11,11 +11,11 @@ BEGIN
     DECLARE category_id_2 INT UNSIGNED;
 
     -- Getting the ID of the allowed categories for the concerned distributor
-    SELECT `id` INTO category_id_1 FROM `central`.`category` WHERE `name` = 'Santé' LIMIT 1;
-    SELECT `id` INTO category_id_2 FROM `central`.`category` WHERE `name` = 'Sport sain' LIMIT 1;
+    SELECT `id` INTO category_id_1 FROM `category` WHERE `name` = 'Santé' LIMIT 1;
+    SELECT `id` INTO category_id_2 FROM `category` WHERE `name` = 'Sport sain' LIMIT 1;
 
     -- Getting the products list
-    SELECT * FROM `central`.`product` WHERE
+    SELECT * FROM `product` WHERE
         `id_category` = category_id_1 OR
         `id_category` = category_id_2
     ;
@@ -24,5 +24,5 @@ DELIMITER ;
 
 -- User
 CREATE USER 'medidonc_user'@'localhost' IDENTIFIED BY 'ssuNB_SRGHA44WX£%§_5678IOùm:LK?NIBGYO8-rod(tyrfo-)';
-GRANT EXECUTE ON PROCEDURE `central`.`get_products_for_medidonc` TO 'medidonc_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `get_products_for_medidonc` TO 'medidonc_user'@'localhost';
 FLUSH PRIVILEGES;

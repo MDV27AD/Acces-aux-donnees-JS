@@ -11,6 +11,7 @@ interface Product {
   price: number;
   status: "available" | "out_of_stock";
   supplier: string;
+  supplierId: string;
   category: string;
 }
 
@@ -35,12 +36,11 @@ ON s.id = p.id_supplier
 `;
 
 export default (conn: Connection) => {
-  async function findAll(limit: number): ResultPromise<Product[]> {
+  async function findAll(): ResultPromise<Product[]> {
     try {
-      const [products] = await conn.execute<RowDataPacket[]>(`
-            ${SELECT_PRODUCT}
-            ${limit ? "LIMIT " + limit : ""}
-            `);
+      const [products] = await conn.execute<RowDataPacket[]>(
+        `CALL get_all_products()`
+      );
 
       return [products as Product[], true];
     } catch (err) {
@@ -53,10 +53,7 @@ export default (conn: Connection) => {
   async function findOne(id: number): ResultPromise<Product> {
     try {
       const [[product]] = await conn.execute<RowDataPacket[]>(
-        `
-        ${SELECT_PRODUCT}
-        WHERE p.id = :id
-        `,
+        `CALL get_product(:id)`,
         { id }
       );
 

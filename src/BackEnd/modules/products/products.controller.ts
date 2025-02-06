@@ -14,16 +14,7 @@ export default (conn: Connection) => {
   router.put("/:id", updateProduct);
 
   async function findAll(req: Request, res: Response) {
-    let limit: number = 0;
-    if (req.query["limit"]) {
-      limit = parseInt(req.query["limit"].toString());
-    }
-
-    if (isNaN(limit)) {
-      return sendMessage(res, "badRequest");
-    }
-
-    const [products, success] = await service.findAll(limit);
+    const [products, success] = await service.findAll();
     if (!success) {
       return sendMessage(res, "internalError");
     }

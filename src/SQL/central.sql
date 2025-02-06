@@ -319,6 +319,7 @@ BEGIN
         `product`.`price`,
         `product`.`status`,
         `supplier`.`name` AS `supplier`,
+        `supplier`.`id` AS `supplierId`,
         `category`.`name` AS `category`
     FROM `product`
     LEFT JOIN `category` ON `category`.`id` = `product`.`id_category`
@@ -352,6 +353,7 @@ BEGIN
         `product`.`price`,
         `product`.`status`,
         `supplier`.`name` AS `supplier`,
+        `supplier`.`id` AS `supplierId`,
         `category`.`name` AS `category`
     FROM `product`
     LEFT JOIN `category` ON `category`.`id` = `product`.`id_category`

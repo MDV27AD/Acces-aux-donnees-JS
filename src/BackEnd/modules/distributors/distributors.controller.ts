@@ -15,7 +15,8 @@ export default (conn: Connection) => {
       return sendMessage(res, "internalError");
     }
 
-    res.json(distributors);
+    const names = distributors.map((d) => d.name);
+    res.json(names);
   }
 
   return {

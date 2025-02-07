@@ -46,3 +46,9 @@ export const deleteAllProducts = async (_req, res) => {
     await Product.deleteMany({})
     res.status(200).json({message: 'All Products deleted successfully'})
 }
+
+export const deleteProductBySerialNumber = async (req, res) => {
+    const serialNumber = req.params.serialNumber
+    await Product.deleteOne({p_serial_number: serialNumber})
+    res.status(200).json({message: `Product with serial number ${serialNumber} deleted successfully`})
+}

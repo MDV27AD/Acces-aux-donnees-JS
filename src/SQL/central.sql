@@ -282,8 +282,10 @@ NOT DETERMINISTIC
 MODIFIES SQL DATA
 SQL SECURITY DEFINER
 BEGIN
+    DECLARE product_category VARCHAR(255);
+
     -- Checking parameters
-    IF deleted_product_sn = '' THEN
+    IF deleted_product_sn IS NULL THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'deleted_product_sn cannot be null.';
     END IF;
@@ -294,8 +296,17 @@ BEGIN
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
 
+    -- Getting the product category before deleting it
+    SELECT `category`.`name` INTO product_category FROM `product`
+    INNER JOIN `category` ON `product`.`id_category` = `category`.`id`
+    WHERE `serial_number` = deleted_product_sn
+    LIMIT 1;
+
     -- Deleting the product
     DELETE FROM `product` WHERE `serial_number` = deleted_product_sn;
+
+    -- Returning the product category
+    SELECT product_category AS category;
 END $$
 
 CREATE PROCEDURE `get_all_products`()

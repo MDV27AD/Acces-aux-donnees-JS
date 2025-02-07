@@ -8,6 +8,7 @@ export default (conn: Connection) => {
   const service = distributorsService(conn);
 
   router.get("/", findAll);
+  router.get("/:id/toggle-status", toggleStatus);
 
   async function findAll(req: Request, res: Response) {
     const [distributors, success] = await service.findAll();
@@ -16,6 +17,20 @@ export default (conn: Connection) => {
     }
 
     res.json(distributors.map((d) => ({ name: d.name, status: d.status })));
+  }
+
+  async function toggleStatus(req: Request, res: Response) {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return sendMessage(res, "invalidId");
+    }
+
+    const [updatedStatus, success] = await service.toggleStatus(id);
+    if (!success) {
+      return sendMessage(res, "internalError");
+    }
+
+    res.json(updatedStatus);
   }
 
   return {

@@ -1,4 +1,5 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
+import { ResultPromise } from "../types";
 
 interface DatabaseCategory {
   id: string;
@@ -7,9 +8,7 @@ interface DatabaseCategory {
 }
 
 export default (conn: Connection) => {
-  async function findAll(): Promise<
-    [DatabaseCategory[], true] | [null, false]
-  > {
+  async function findAll(): ResultPromise<DatabaseCategory[]> {
     try {
       const [[categories]] = await conn.execute<RowDataPacket[][]>(
         `CALL get_all_categories()`

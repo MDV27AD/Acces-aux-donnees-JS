@@ -1,6 +1,6 @@
 async function fetchProducts() {
     try {
-        const response = await fetch("https://acces-aux-donnees-js-medidonc.onrender.com/products");
+        const response = await fetch("http://localhost:3062/products");
         console.log(response);
         const products = await response.json();
 
@@ -27,7 +27,7 @@ async function fetchProducts() {
 }
 
 function refreshData() {
-    fetch('https://acces-aux-donnees-js-medidonc.onrender.com/products')
+    fetch('http://localhost:3062/products')
         .then(response => response.json())
         .then(products => {
             const productList = document.querySelector('.product-list');

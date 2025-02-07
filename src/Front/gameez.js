@@ -1,6 +1,6 @@
 async function fetchProducts() {
     try {
-        const response = await fetch("https://acces-aux-donnees-js-mongodb-gameez.onrender.com/products");
+        const response = await fetch("http://localhost:3060/products");
         const products = await response.json();
 
         const productList = document.querySelector(".product-list");
@@ -27,7 +27,7 @@ async function fetchProducts() {
 }
 
 function refreshData() {
-    fetch('https://acces-aux-donnees-js-mongodb-gameez.onrender.com/products')
+    fetch('http://localhost:3060/products')
         .then(response => response.json())
         .then(products => {
             const productList = document.querySelector('.product-list');

@@ -1,12 +1,13 @@
 import { Request, Response, Router } from "express";
 import { Connection } from "mysql2/promise";
+import { distributors } from "../../distributors";
 import { sendMessage } from "../../messages";
+import { getCategoryDistributor } from "../helper";
 import productsService from "./products.service";
 import {
   UpdateProductData,
   updateProductSchema,
 } from "./schemas/update-product.schema";
-import { distributors } from "../../distributors";
 
 export default (conn: Connection) => {
   const router = Router();
@@ -49,8 +50,17 @@ export default (conn: Connection) => {
       return sendMessage(res, "invalidSerial");
     }
 
-    const [_, success] = await service.deleteProduct(serialNumber);
+    const [deletedProductCategory, success] =
+      await service.deleteProduct(serialNumber);
     if (!success) {
+      return sendMessage(res, "internalError");
+    }
+
+    const mongoDeleteSuccess = await deleteMongoProduct(
+      serialNumber,
+      deletedProductCategory
+    );
+    if (!mongoDeleteSuccess) {
       return sendMessage(res, "internalError");
     }
 
@@ -120,8 +130,31 @@ async function updateMongoProduct(
     const data = await mongoRes.json();
     return [data.product, true];
   } catch (err) {
-    console.error("Error while parsing mongo's response:", err);
+    console.error("Error while parsing mongo's update response:", err);
   }
 
   return [null, false];
+}
+
+async function deleteMongoProduct(
+  serialNumber: number,
+  category: string
+): Promise<boolean> {
+  const productDistributor = getCategoryDistributor(category);
+  if (!productDistributor) {
+    return false;
+  }
+
+  const mongoRes = await fetch(
+    `${productDistributor?.mongoUrl}/${serialNumber}`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (!mongoRes.ok) {
+    console.error("Error while deleting product from mongo:", mongoRes);
+    return false;
+  }
+
+  return true;
 }

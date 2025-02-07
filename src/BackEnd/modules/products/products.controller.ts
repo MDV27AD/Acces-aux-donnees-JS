@@ -47,9 +47,9 @@ export default (conn: Connection) => {
       return sendMessage(res, "invalidSerial");
     }
 
-    const [deletedProductCategory, success] =
+    const [deletedProductCategory, dbDeleteSuccess] =
       await service.deleteProduct(serialNumber);
-    if (!success) {
+    if (!dbDeleteSuccess) {
       return sendMessage(res, "internalError");
     }
 
@@ -70,15 +70,14 @@ export default (conn: Connection) => {
       return sendMessage(res, "invalidId");
     }
 
-    const { data, success } = await updateProductSchema.safeParseAsync(
-      req.body
-    );
-    if (!success) {
+    const { data, success: parseSuccess } =
+      await updateProductSchema.safeParseAsync(req.body);
+    if (!parseSuccess) {
       return sendMessage(res, "badRequest");
     }
 
-    const [_, updateSuccess] = await service.updateProduct(id, data);
-    if (!updateSuccess) {
+    const [_, dbUpdateSuccess] = await service.updateProduct(id, data);
+    if (!dbUpdateSuccess) {
       return sendMessage(res, "internalError");
     }
 

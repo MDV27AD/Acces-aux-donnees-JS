@@ -139,7 +139,6 @@ END $$
 CREATE PROCEDURE `modify_product`(    
     IN `modified_product_id` INT UNSIGNED,
     IN `new_sku` VARCHAR(15),
-    IN `new_serial_number` INT UNSIGNED,
     IN `new_name` VARCHAR(255),
     IN `new_description` TEXT,
     IN `new_price` MEDIUMINT UNSIGNED,
@@ -162,10 +161,6 @@ BEGIN
     IF new_sku = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'new_sku cannot be null.';
-    END IF;
-    IF new_serial_number = '' THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'new_serial_number cannot be null.';
     END IF;
     IF new_name = '' THEN
         SIGNAL SQLSTATE '45000'
@@ -215,7 +210,6 @@ BEGIN
     -- Updating the product
     UPDATE `product` SET
         `sku`           = new_sku,
-        `serial_number` = new_serial_number,
         `name`          = new_name,
         `description`   = new_description,
         `price`         = new_price,
@@ -434,6 +428,12 @@ BEGIN
     IF NEW.created_at <> OLD.created_at THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'You cannot change the created_at time of an item.';
+    END IF;
+
+    -- Forbidding the serial_number field to be modified
+    IF NEW.serial_number <> OLD.serial_number THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'You cannot change the serial_number of a product.';
     END IF;
 
     -- Updating the updated_at field

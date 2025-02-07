@@ -16,6 +16,10 @@ GAME_EZ_PORT=3060
 SPORT_SALUT_PORT=3061
 MEDIDONC_PORT=3062
 
+GAME_EZ_URL"https://acces-aux-donnees-js-mongodb-gameez.onrender.com/products"
+SPORT_SALUT_URL"https://acces-aux-donnees-js-sport-salut.onrender.com/products"
+MEDIDONC_URL"https://acces-aux-donnees-js-medidonc.onrender.com/products"
+
 DB_CENTRAL_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"
 DB_ROOT_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"
 

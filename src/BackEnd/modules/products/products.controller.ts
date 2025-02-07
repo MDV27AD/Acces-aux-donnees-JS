@@ -14,7 +14,7 @@ export default (conn: Connection) => {
 
   router.get("/", findAll);
   router.get("/:id", findOne);
-  router.delete("/:id", deleteProduct);
+  router.delete("/:serialNumber", deleteProduct);
   router.put("/:id", updateProduct);
 
   async function findAll(req: Request, res: Response) {

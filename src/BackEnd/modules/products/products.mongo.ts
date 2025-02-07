@@ -1,4 +1,3 @@
-import { Connection } from "mysql2/promise";
 import { UpdateProductData } from "./schemas/update-product.schema";
 import { getCategoryDistributor } from "../helper";
 import { DISTRIBUTORS } from "../../constants";

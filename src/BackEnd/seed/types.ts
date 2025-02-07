@@ -1,4 +1,4 @@
-import { CATEGORIES as CATEGORIES } from "../constants";
+import { CATEGORIES } from "../constants";
 
 export interface Distributor {
   name: string;

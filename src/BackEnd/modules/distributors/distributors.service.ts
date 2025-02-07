@@ -1,7 +1,11 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
 
 interface Distributor {
+  id: string;
   name: string;
+  status: "active" | "inactive";
+  created_at: string;
+  updated_at: string;
 }
 
 export default (conn: Connection) => {

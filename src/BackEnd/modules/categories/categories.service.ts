@@ -1,7 +1,9 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
 
 interface Category {
+  id: string;
   name: string;
+  created_at: string;
 }
 
 export default (conn: Connection) => {

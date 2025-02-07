@@ -15,26 +15,6 @@ interface Product {
   category: string;
 }
 
-const SELECT_PRODUCT = `
-SELECT 
-  p.id,
-  p.sku,
-  p.name, 
-  p.serial_number, 
-  p.description, 
-  p.price, 
-  p.status,
-  s.name AS supplier,
-  c.name AS category
-FROM product p
-
-LEFT JOIN category c
-ON c.id = p.id_category
-
-LEFT JOIN supplier s
-ON s.id = p.id_supplier
-`;
-
 export default (conn: Connection) => {
   async function findAll(): ResultPromise<Product[]> {
     try {

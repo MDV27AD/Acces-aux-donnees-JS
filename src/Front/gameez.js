@@ -1,14 +1,12 @@
 async function fetchProducts() {
     try {
         const response = await fetch("https://acces-aux-donnees-js-mongodb-gameez.onrender.com/products");
-        console.log(response);
         const products = await response.json();
 
         const productList = document.querySelector(".product-list");
         productList.innerHTML = "";
 
         products.forEach((product, index) => {
-            console.log(product);
             const productElement = document.createElement("div");
             productElement.classList.add("product");
             productElement.innerHTML = `

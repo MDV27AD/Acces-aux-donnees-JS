@@ -8,17 +8,15 @@ async function fetchProducts() {
         productList.innerHTML = "";
 
         products.forEach((product, index) => {
-            console.log(product);
             const productElement = document.createElement("div");
             productElement.classList.add("product");
             productElement.innerHTML = `
-                <span class="product-name">${product.p_name}</span>
-                <p><strong>SKU:<br></br></strong> ${product.p_sku}</p>
-                <p><strong>Prix:<br></br></strong> ${product.p_price}€</p>
-                <p><strong>Description:<br></br></strong> ${product.p_description}</p>
+                <span class="product-name">${product.nom_produit}</span>
+                <p><strong>SKU:<br></br></strong> ${product.sku_produit}</p>
+                <p><strong>Prix:<br></br></strong> ${product.prix}€</p>
+                <p><strong>Description:<br></br></strong> ${product.description_produit}</p>
                 <p><strong>Statut:<br></br></strong> ${product.p_status}</p>
-                <p><strong>Fournisseur:<br></br></strong> ${product.p_seller.name}</p>
-                <p><strong>Catégorie:<br></br></strong> ${product.p_category}</p>
+                <p><strong>Catégorie:<br></br></strong> ${product.category_produit}</p>
             `;
             productList.appendChild(productElement);
         });
@@ -44,7 +42,6 @@ function refreshData() {
                     <p><strong>Prix:<br></br></strong> ${product.p_price}€</p>
                     <p><strong>Description:<br></br></strong> ${product.p_description}</p>
                     <p><strong>Statut:<br></br></strong> ${product.p_status}</p>
-                    <p><strong>Fournisseur:<br></br></strong> ${product.p_seller.name}</p>
                     <p><strong>Catégorie:<br></br></strong> ${product.p_category}</p>
                 `;
                 productList.appendChild(productElement);

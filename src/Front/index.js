@@ -18,7 +18,7 @@ async function fetchProducts() {
                 <p><strong>Catégorie:<br></br></strong> ${product.category}</p>
                 <div class="buttons">
                     <button class="edit" data-id="${product.id}"></button>
-                    <button class="delete" data-id="${product.id}"></button>
+                    <button class="delete" data-serial="${product.id}"></button>
                 </div>
             `;
             productList.appendChild(productElement);
@@ -34,7 +34,7 @@ function refreshData() {
         .then(response => response.json())
         .then(products => {
             const productList = document.querySelector('.product-list');
-            productList.innerHTML = ''; 
+            productList.innerHTML = '';
 
             products.forEach(product => {
                 const productElement = document.createElement('div');
@@ -49,7 +49,7 @@ function refreshData() {
                     <p><strong>Catégorie:</strong> ${product.category}</p>
                     <div class="buttons">
                         <button class="edit" data-id="${product.id}"></button>
-                        <button class="delete" data-id="${product.id}"></button>
+                        <button class="delete" data-serial="${product.id}"></button>
                     </div>
                 `;
                 productList.appendChild(productElement);
@@ -81,23 +81,22 @@ document.querySelector('.addProductButton').addEventListener('click', function()
 
 // suppression du produit
 document.addEventListener('click', function(event) {
-    
     if (event.target.classList.contains('delete')) {
-        const productId = event.target.getAttribute('data-id'); 
+        const productSerial = event.target.getAttribute('data-serial');
         const productElement = event.target.closest('.product');
 
         if (confirm("Voulez-vous vraiment supprimer ce produit ?")) {
-            fetch(`http://localhost:3000/product/${productId}`, {
+            fetch(`http://localhost:3000/product/${productSerial}`, {
                 method: 'DELETE'
             })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur lors de la suppression');
                 }
-                return response.text(); 
+                return response.text();
             })
             .then(() => {
-                productElement.classList.add('deleting'); 
+                productElement.classList.add('deleting');
                 setTimeout(() => {
                     productElement.remove();
                     refreshData();
@@ -120,7 +119,7 @@ document.addEventListener('click', function(event) {
             .then(product => {
                 document.getElementById('name').value = product.name;
                 document.getElementById('supplierName').value = product.supplier;
-                document.getElementById('serialNumber').value = product.serial_number;
+                document.getElementById('serialNumber').value = product.serialNumber;
                 document.getElementById('sku').value = product.sku;
                 document.getElementById('price').value = product.price;
                 document.getElementById('description').value = product.description;
@@ -146,7 +145,7 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
 
     const updatedProduct = {
         sku: document.getElementById('sku').value,
-        serial_number: document.getElementById('serialNumber').value,
+        serialNumber: document.getElementById('serialNumber').value,
         name: document.getElementById('name').value,
         description: document.getElementById('description').value,
         price: document.getElementById('price').value,

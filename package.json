@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "front:start": "src/Front/index.html",
-    "sql:start": "src/SQL/central.sql",
+    "sql:start": "src/SQL/central.sql && src/SQL/gamez.sql && src/SQL/sport_salut.sql && src/SQL/medidonc.sql",
     "serve:game_ez": "node src/MongoDB/GamEZ/app.js",
     "serve:sport_salut": "node src/MongoDB/SPORT_SALUT/app.js",
     "serve:medidonc": "node src/MongoDB/MEDIDONC/app.js",

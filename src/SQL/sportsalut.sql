@@ -1,5 +1,8 @@
 USE `central`;
 
+-- Cleaning users
+DROP USER IF EXISTS 'sportsalut_user'@'localhost';
+
 -- Stored procedure
 DELIMITER $$
 CREATE PROCEDURE `get_products_for_sportsalut`()
@@ -18,6 +21,6 @@ END $$
 DELIMITER ;
 
 -- User
-CREATE USER 'sportsalut_user'@'localhost' IDENTIFIED BY 'ssuNB_SRGHA44WX£%§_5678IOùm:LK?NIBGYO8-rod(tyrfo-)';
+CREATE USER 'sportsalut_user'@'localhost' IDENTIFIED BY 'NBFR5678IOùm:LK?NIBO87TIGYO8-rod(tyrfo-)';
 GRANT EXECUTE ON PROCEDURE `get_products_for_sportsalut` TO 'sportsalut_user'@'localhost';
 FLUSH PRIVILEGES;

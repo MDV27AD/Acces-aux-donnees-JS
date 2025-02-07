@@ -61,24 +61,6 @@ function refreshData() {
 
 document.addEventListener("DOMContentLoaded", fetchProducts);
 
-/*document.querySelector('.addProductButton').addEventListener('click', function() {
-    const formContainer = document.getElementById('formContainer');
-    formContainer.style.display = 'flex';  
-
-    fetch('http://acces-aux-donnees-js-medidonc.onrender.com/products')
-    .then(response => response.json())
-    .then(data => {
-        // données récupérées
-    })
-    .catch(error => {
-        console.error('Erreur lors de la récupération des données:', error);
-    });
-});
-
-document.querySelector('.addProductButton').addEventListener('click', function() {
-    document.getElementById('formContainer').style.display = 'flex';
-});*/
-
 // suppression du produit
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete')) {
@@ -153,7 +135,6 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
         supplier: document.getElementById('supplierName').value
     };
 
-    console.log(updatedProduct);
 
     fetch(`http://localhost:3000/product/${productId}`, {
         method: 'PUT',

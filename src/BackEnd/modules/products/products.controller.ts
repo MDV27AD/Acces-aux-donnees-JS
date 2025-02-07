@@ -70,17 +70,17 @@ export default (conn: Connection) => {
       return sendMessage(res, "badRequest");
     }
 
-    const mongoUpdateSuccess = await updateMongoProduct(data);
-    if (!mongoUpdateSuccess) {
-      return sendMessage(res, "internalError");
-    }
-
     const [_, updateSuccess] = await service.updateProduct(id, data);
     if (!updateSuccess) {
       return sendMessage(res, "internalError");
     }
 
-    res.send();
+    const [updatedProduct, mongoUpdateSuccess] = await updateMongoProduct(data);
+    if (!mongoUpdateSuccess) {
+      return sendMessage(res, "internalError");
+    }
+
+    res.json(updatedProduct);
   }
 
   return {
@@ -89,14 +89,16 @@ export default (conn: Connection) => {
   };
 };
 
-async function updateMongoProduct(data: UpdateProductData) {
+async function updateMongoProduct(
+  data: UpdateProductData
+): Promise<[object, true] | [null, false]> {
   const productDistributor = distributors.find((d) =>
     d.categories.find(
       (c) => c.toLowerCase() === data.category.toLowerCase().trim()
     )
   );
   if (!productDistributor) {
-    return false;
+    return [null, false];
   }
 
   const mongoRes = await fetch(productDistributor?.mongoUrl, {
@@ -111,8 +113,15 @@ async function updateMongoProduct(data: UpdateProductData) {
   });
   if (!mongoRes.ok) {
     console.error("Error while posting updated product to mongo:", mongoRes);
-    return false;
+    return [null, false];
   }
 
-  return true;
+  try {
+    const data = await mongoRes.json();
+    return [data.product, true];
+  } catch (err) {
+    console.error("Error while parsing mongo's response:", err);
+  }
+
+  return [null, false];
 }

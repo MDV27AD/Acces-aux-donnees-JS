@@ -1,6 +1,6 @@
 async function fetchProducts() {
     try {
-        const response = await fetch("https://acces-aux-donnees-js-sport-salut.onrender.com/products");
+        const response = await fetch("http://localhost:3061/products");
         console.log(response);
         const products = await response.json();
 
@@ -16,7 +16,7 @@ async function fetchProducts() {
                 <p><strong>SKU:<br></br></strong> ${product.sku_produit}</p>
                 <p><strong>Prix:<br></br></strong> ${product.prix}€</p>
                 <p><strong>Description:<br></br></strong> ${product.description_produit}</p>
-                <p><strong>Statut:<br></br></strong> ${product.en_stock === 'Oui' ? 'Available' : product.en_stock}</p>
+                <p><strong>Statut:<br></br></strong> ${product.en_stock}</p>
                 <p><strong>Catégorie:<br></br></strong> ${product.category_produit}</p>
             `;
             productList.appendChild(productElement);
@@ -28,7 +28,7 @@ async function fetchProducts() {
 }
 
 function refreshData() {
-    fetch('https://acces-aux-donnees-js-sport-salut.onrender.com/products')
+    fetch('http://localhost:3061/products')
         .then(response => response.json())
         .then(products => {
             const productList = document.querySelector('.product-list');
@@ -42,7 +42,7 @@ function refreshData() {
                     <p><strong>SKU:<br></br></strong> ${product.sku_produit}</p>
                     <p><strong>Prix:<br></br></strong> ${product.prix}€</p>
                     <p><strong>Description:<br></br></strong> ${product.description_produit}</p>
-                    <p><strong>Statut:<br></br></strong> ${product.en_stock === 'oui' ? 'Available' : product.en_stock}</p>
+                    <p><strong>Statut:<br></br></strong> ${product.en_stock}</p>
                     <p><strong>Catégorie:<br></br></strong> ${product.category_produit}</p>
                 `;
                 productList.appendChild(productElement);

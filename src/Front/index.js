@@ -125,7 +125,6 @@ document.addEventListener('click', function(event) {
                 document.getElementById('description').value = product.description;
                 document.getElementById('status').value = product.status;
                 document.getElementById('category').value = product.category;
-                
                 document.getElementById('formContainer').style.display = 'flex';
                 document.getElementById('submitForm').setAttribute('data-id', productId);
             })

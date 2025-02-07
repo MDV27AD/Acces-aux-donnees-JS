@@ -17,8 +17,8 @@ async function fetchProducts() {
                 <p><strong>Fournisseur:<br></br></strong> ${product.supplier}</p>
                 <p><strong>Catégorie:<br></br></strong> ${product.category}</p>
                 <div class="buttons">
-                    <button class="edit" data-id="${product.serial_number}"></button>
-                    <button class="delete" data-id="${product.serial_number}"></button>
+                    <button class="edit" data-id="${product.id}"></button>
+                    <button class="delete" data-id="${product.id}"></button>
                 </div>
             `;
             productList.appendChild(productElement);
@@ -48,8 +48,8 @@ function refreshData() {
                     <p><strong>Fournisseur:</strong> ${product.supplier}</p>
                     <p><strong>Catégorie:</strong> ${product.category}</p>
                     <div class="buttons">
-                        <button class="edit" data-id="${product.serial_number}"></button>
-                        <button class="delete" data-id="${product.serial_number}"></button>
+                        <button class="edit" data-id="${product.id}"></button>
+                        <button class="delete" data-id="${product.id}"></button>
                     </div>
                 `;
                 productList.appendChild(productElement);
@@ -128,7 +128,7 @@ document.addEventListener('click', function(event) {
                 document.getElementById('category').value = product.category;
                 
                 document.getElementById('formContainer').style.display = 'flex';
-                document.getElementById('submitForm').setAttribute('data-id', product.serial_number);
+                document.getElementById('submitForm').setAttribute('data-id', productId);
             })
             .catch(error => console.error('Erreur lors de la récupération du produit:', error));
     }

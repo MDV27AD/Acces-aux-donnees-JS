@@ -13,7 +13,7 @@ async function fetchProducts() {
                 <p><strong>SKU:<br></br></strong> ${product.sku}</p>
                 <p><strong>Prix:<br></br></strong> ${product.price}€</p>
                 <p><strong>Description:<br></br></strong> ${product.description}</p>
-                <p><strong>Statut:<br></br></strong> ${product.status}</p>
+                <p><strong>Statut:<br></br></strong> ${product.status == "available" ? "Disponible" : "Rupture de stock"}</p>
                 <p><strong>Fournisseur:<br></br></strong> ${product.supplier}</p>
                 <p><strong>Catégorie:<br></br></strong> ${product.category}</p>
                 <div class="buttons">
@@ -41,12 +41,12 @@ function refreshData() {
                 productElement.classList.add('product');
                 productElement.innerHTML = `
                     <span class="product-name">${product.name}</span>
-                    <p><strong>SKU:</strong> ${product.sku}</p>
-                    <p><strong>Prix:</strong> ${product.price}€</p>
-                    <p><strong>Description:</strong> ${product.description}</p>
-                    <p><strong>Statut:</strong> ${product.status}</p>
-                    <p><strong>Fournisseur:</strong> ${product.supplier}</p>
-                    <p><strong>Catégorie:</strong> ${product.category}</p>
+                    <p><strong>SKU:<br></br></strong> ${product.sku}</p>
+                    <p><strong>Prix:<br></br></strong> ${product.price}€</p>
+                    <p><strong>Description:<br></br></strong> ${product.description}</p>
+                    <p><strong>Statut:<br></br></strong> ${product.status == "available" ? "Disponible" : "Rupture de stock"}</p>
+                    <p><strong>Fournisseur:<br></br></strong> ${product.supplier}</p>
+                    <p><strong>Catégorie:<br></br></strong> ${product.category}</p>
                     <div class="buttons">
                         <button class="edit" data-id="${product.id}"></button>
                         <button class="delete" data-serial="${product.serial_number}"></button>

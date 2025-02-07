@@ -188,7 +188,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = modified_product_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `product` WHERE `id` = modified_product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
@@ -243,7 +243,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested supplier exists
-    IF NOT EXISTS (SELECT * FROM `supplier` WHERE `id` = modified_supplier_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `supplier` WHERE `id` = modified_supplier_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested supplier does not exist.';
     END IF;
@@ -267,7 +267,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested supplier exists
-    IF NOT EXISTS (SELECT * FROM `supplier` WHERE `id` = deleted_supplier_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `supplier` WHERE `id` = deleted_supplier_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested supplier does not exist.';
     END IF;
@@ -291,7 +291,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `product` WHERE `serial_number` = deleted_product_sn LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `product` WHERE `serial_number` = deleted_product_sn LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
@@ -343,7 +343,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = product_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `product` WHERE `id` = product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
@@ -387,7 +387,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested distributor exists
-    IF NOT EXISTS (SELECT * FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested distributor does not exist.';
     END IF;
@@ -417,7 +417,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested category exists
-    IF NOT EXISTS (SELECT * FROM `category` WHERE `id` = category_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `category` WHERE `id` = category_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested category does not exist.';
     END IF;
@@ -438,13 +438,16 @@ BEGIN
     END IF;
 
     -- Checking if the requested distributor exists
-    IF NOT EXISTS (SELECT * FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested distributor does not exist.';
     END IF;
 
     -- Updating the distributor's status
     UPDATE `distributor` SET `status` = (2 - `status` + 1) WHERE `id` = distributor_id;
+
+    -- Returning the new distributor's status
+    SELECT `status` FROM `distributor` WHERE `id` = distributor_id;
 END $$
 
 DELIMITER ;

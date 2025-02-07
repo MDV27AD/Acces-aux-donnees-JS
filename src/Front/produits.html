@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produits</title>
+    <link rel="stylesheet" href="stylesProduits.css">
+</head>
+<body>
+    <button class="addProductButton"></button>
+
+    <div class="container">
+        <h1>Liste des Produits</h1>
+        <div class="product-list">
+
+        </div>
+    </div>
+
+    <div id="formContainer" class="form-container" style="display: none;">
+        <label for="name">Nom du produit:</label>
+        <input type="text" id="name" required><br><br>
+    
+        <label for="supplierName">Nom du fournisseur:</label>
+        <input type="text" id="supplierName" required><br><br>
+    
+        <label for="supplierId">ID du fournisseur:</label>
+        <input type="text" id="supplierId" required><br><br>
+    
+        <label for="serialNumber">Numéro de série:</label>
+        <input type="text" id="serialNumber" required><br><br>
+    
+        <label for="sku">SKU:</label>
+        <input type="text" id="sku" required><br><br>
+    
+        <label for="price">Price:</label>
+        <input type="number" id="price" required><br><br>
+    
+        <label for="description">Description:</label>
+        <textarea id="description" required></textarea><br><br>
+    
+        <label for="status">Status:</label>
+        <select id="status" required>
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+        </select><br><br>
+    
+        <label for="category">Catégorie:</label>
+        <input type="text" id="category" required><br><br>
+    
+        <label for="supplierCreatedAt">Date de création:</label>
+        <input type="date" id="supplierCreatedAt" required><br><br>
+    
+        <button type="submit" id="submitForm">Submit</button>
+    </div>
+    
+    <script src="index.js"></script>
+</body>
+</html>

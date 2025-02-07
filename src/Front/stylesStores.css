@@ -1,0 +1,197 @@
+body {
+    font-family: "Aldo", sans-serif;
+    font-size: 20px;
+    background-color: #262626;
+    margin: 0;
+    color: white;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Empêche le dépassement du body */
+}
+
+.refreshButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background: url('img/refresh.png') no-repeat center center;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    background-color: #B3001B;
+    background-size: 30px 30px;
+}
+
+.timer {
+    position: absolute;
+    top: 25px; /* Ajuste la position en fonction du besoin */
+    left: 65px; /* Décalage à côté du bouton */
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+}
+
+.edit {
+    width: 40px;
+    height: 40px;
+    background: url('img/editer.png') no-repeat center center;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    background-color: #CCAD8F;
+}
+
+.delete {
+    width: 40px;
+    height: 40px;
+    background: url('img/supprimer.png') no-repeat center center;
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    background-color: #CCAD8F;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 80%;
+    max-width: 1000px;
+    padding-top: 20px;
+    height: 90vh; /* Hauteur fixe pour éviter les déplacements */
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 170%;
+    max-height: 70vh;
+    overflow-y: auto; /* Active le défilement vertical */
+    overflow-x: hidden;
+    padding-right: 10px;
+}
+
+.product-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.product-list::-webkit-scrollbar-thumb {
+    background: #B3001B;
+    border-radius: 10px;
+}
+
+.product {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #B3001B;
+    padding: 20px;
+    border-radius: 15px;
+    width: 97%;
+    gap: 30px;
+}
+
+.product p{
+    font-size: 20px;
+}
+
+.product:hover {
+    opacity: 0.6;
+}
+
+.product-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    width: 120px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #CCAD8F;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, background-color 0.2s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background-color: white;
+}
+
+.delete {
+    color: white;
+}
+
+.delete:hover {
+    background-color: #FF4C4C;
+}
+
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #B3001B;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    width: 300px;
+    color: white;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#submitForm {
+    background-color: #CCAD8F;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submitForm:hover {
+    background-color: white;
+    transform: scale(1.1);
+}
+
+@keyframes fadeUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+.product.deleting {
+    animation: fadeUp 1s forwards;
+}

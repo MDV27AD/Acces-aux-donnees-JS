@@ -61,7 +61,7 @@ function refreshData() {
 
 document.addEventListener("DOMContentLoaded", fetchProducts);
 
-document.querySelector('.addProductButton').addEventListener('click', function() {
+/*document.querySelector('.addProductButton').addEventListener('click', function() {
     const formContainer = document.getElementById('formContainer');
     formContainer.style.display = 'flex';  
 
@@ -77,7 +77,7 @@ document.querySelector('.addProductButton').addEventListener('click', function()
 
 document.querySelector('.addProductButton').addEventListener('click', function() {
     document.getElementById('formContainer').style.display = 'flex';
-});
+});*/
 
 // suppression du produit
 document.addEventListener('click', function(event) {

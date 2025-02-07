@@ -40,6 +40,15 @@ export const getAllProducts = async (_req, res) => {
     res.status(200).json(products)
 }
 
+export const getOneProduct = async (req, res) => {
+    const identifier = req.params.identifier
+    const productFound = await Product.findOne({
+        $or: [{'product.product_serial_number': identifier}, {'product.product_sku': identifier}]
+    })
+    if (productFound) return res.status(200).json(productFound)
+    return res.status(404).json({message: 'Product not found'})
+}
+
 export const getAvailableProducts = async (_req, res) => {
     const products = await Product.find({ 'product.product_status': 'available' })
     res.status(200).json(products)

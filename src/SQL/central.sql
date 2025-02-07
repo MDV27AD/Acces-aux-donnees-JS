@@ -1,3 +1,7 @@
+-- Cleaning database and users
+DROP DATABASE IF EXISTS `central`;
+DROP USER IF EXISTS 'central_user'@'localhost';
+
 -- Database
 CREATE DATABASE `central`
 DEFAULT CHARACTER SET UTF8MB4 COLLATE utf8mb4_unicode_ci;

@@ -18,7 +18,7 @@ async function fetchProducts() {
                 <p><strong>Catégorie:<br></br></strong> ${product.category}</p>
                 <div class="buttons">
                     <button class="edit" data-id="${product.id}"></button>
-                    <button class="delete" data-serial="${product.id}"></button>
+                    <button class="delete" data-serial="${product.serial_number}"></button>
                 </div>
             `;
             productList.appendChild(productElement);
@@ -49,7 +49,7 @@ function refreshData() {
                     <p><strong>Catégorie:</strong> ${product.category}</p>
                     <div class="buttons">
                         <button class="edit" data-id="${product.id}"></button>
-                        <button class="delete" data-serial="${product.id}"></button>
+                        <button class="delete" data-serial="${product.serial_number}"></button>
                     </div>
                 `;
                 productList.appendChild(productElement);
@@ -119,7 +119,7 @@ document.addEventListener('click', function(event) {
             .then(product => {
                 document.getElementById('name').value = product.name;
                 document.getElementById('supplierName').value = product.supplier;
-                document.getElementById('serialNumber').value = product.serialNumber;
+                document.getElementById('serialNumber').value = product.serial_number;
                 document.getElementById('sku').value = product.sku;
                 document.getElementById('price').value = product.price;
                 document.getElementById('description').value = product.description;
@@ -144,14 +144,16 @@ document.getElementById('submitForm').addEventListener('click', function(event) 
 
     const updatedProduct = {
         sku: document.getElementById('sku').value,
-        serialNumber: document.getElementById('serialNumber').value,
+        serialNumber: parseInt(document.getElementById('serialNumber').value),
         name: document.getElementById('name').value,
         description: document.getElementById('description').value,
-        price: document.getElementById('price').value,
+        price: parseInt(document.getElementById('price').value),
         status: document.getElementById('status').value,
         category: document.getElementById('category').value,
         supplier: document.getElementById('supplierName').value
     };
+
+    console.log(updatedProduct);
 
     fetch(`http://localhost:3000/product/${productId}`, {
         method: 'PUT',

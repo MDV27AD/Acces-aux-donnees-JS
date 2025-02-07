@@ -2,7 +2,7 @@ import { Connection, RowDataPacket } from "mysql2/promise";
 import { ResultPromise } from "../types";
 import { UpdateProductData } from "./schemas/update-product.schema";
 
-interface Product {
+interface DatabaseProduct {
   id: number;
   sku: string;
   name: string;
@@ -16,13 +16,13 @@ interface Product {
 }
 
 export default (conn: Connection) => {
-  async function findAll(): ResultPromise<Product[]> {
+  async function findAll(): ResultPromise<DatabaseProduct[]> {
     try {
       const [[products]] = await conn.execute<RowDataPacket[][]>(
         `CALL get_all_products()`
       );
 
-      return [products as Product[], true];
+      return [products as DatabaseProduct[], true];
     } catch (err) {
       console.error("Error while querrying all products:", err);
     }
@@ -30,14 +30,14 @@ export default (conn: Connection) => {
     return [null, false];
   }
 
-  async function findOne(id: number): ResultPromise<Product> {
+  async function findOne(id: number): ResultPromise<DatabaseProduct> {
     try {
       const [[[product]]] = await conn.execute<RowDataPacket[][]>(
         `CALL get_product(:id)`,
         { id }
       );
 
-      return [product as Product, true];
+      return [product as DatabaseProduct, true];
     } catch (err) {
       console.error(`Error while querrying product with id "${id}":`, err);
     }
@@ -45,13 +45,16 @@ export default (conn: Connection) => {
     return [null, false];
   }
 
-  async function deleteProduct(serialNumber: number): ResultPromise<null> {
+  async function deleteProduct(serialNumber: number): ResultPromise<string> {
     try {
-      await conn.execute("CALL delete_product(:serialNumber)", {
-        serialNumber,
-      });
+      const [[[{ category }]]] = await conn.execute<RowDataPacket[][]>(
+        "CALL delete_product(:serialNumber)",
+        {
+          serialNumber,
+        }
+      );
 
-      return [null, true];
+      return [category as string, true];
     } catch (err) {
       console.error(
         `Error while deleting product with serial number "${serialNumber}":`,

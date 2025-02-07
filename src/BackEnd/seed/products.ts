@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker/locale/fr";
-import { Connection, RowDataPacket } from "mysql2/promise";
-import { Category, Supplier } from "./types";
+import { Connection } from "mysql2/promise";
 import { categories, suppliers } from ".";
 
 export const seedProducts = async (conn: Connection) => {

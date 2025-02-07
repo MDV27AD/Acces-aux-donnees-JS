@@ -45,13 +45,18 @@ export default (conn: Connection) => {
     return [null, false];
   }
 
-  async function deleteProduct(id: number): ResultPromise<null> {
+  async function deleteProduct(serialNumber: number): ResultPromise<null> {
     try {
-      await conn.execute("CALL delete_product(:id)", { id });
+      await conn.execute("CALL delete_product(:serialNumber)", {
+        serialNumber,
+      });
 
       return [null, true];
     } catch (err) {
-      console.error(`Error while deleting product with id "${id}":`, err);
+      console.error(
+        `Error while deleting product with serial number "${serialNumber}":`,
+        err
+      );
     }
 
     return [null, false];
@@ -67,7 +72,6 @@ export default (conn: Connection) => {
         CALL modify_product(
           :id,
           :sku,
-          :serialNumber,
           :name,
           :description,
           :price,
@@ -78,7 +82,13 @@ export default (conn: Connection) => {
         `,
         {
           id,
-          ...data,
+          sku: data.sku,
+          name: data.name,
+          description: data.description,
+          price: data.price,
+          status: data.status,
+          category: data.category,
+          supplier: data.supplier,
         }
       );
 

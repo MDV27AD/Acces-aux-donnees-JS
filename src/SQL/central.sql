@@ -277,25 +277,25 @@ BEGIN
     DELETE FROM `supplier` WHERE `id` = deleted_supplier_id;
 END $$
 
-CREATE PROCEDURE `delete_product`(IN `deleted_product_id` INT UNSIGNED)
+CREATE PROCEDURE `delete_product`(IN `deleted_product_sn` INT UNSIGNED)
 NOT DETERMINISTIC
 MODIFIES SQL DATA
 SQL SECURITY DEFINER
 BEGIN
     -- Checking parameters
-    IF deleted_product_id = '' THEN
+    IF deleted_product_sn = '' THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'deleted_product_id cannot be null.';
+        SET MESSAGE_TEXT = 'deleted_product_sn cannot be null.';
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = deleted_product_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `product` WHERE `serial_number` = deleted_product_sn LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
 
     -- Deleting the product
-    DELETE FROM `product` WHERE `id` = deleted_product_id;
+    DELETE FROM `product` WHERE `serial_number` = deleted_product_sn;
 END $$
 
 CREATE PROCEDURE `get_all_products`()
@@ -320,19 +320,19 @@ BEGIN
     LEFT JOIN `supplier` ON `supplier`.`id` = `product`.`id_supplier`;
 END $$
 
-CREATE PROCEDURE `get_product`(IN `product_sn` INT UNSIGNED)
+CREATE PROCEDURE `get_product`(IN `product_id` INT UNSIGNED)
 NOT DETERMINISTIC
 READS SQL DATA
 SQL SECURITY DEFINER
 BEGIN
     -- Checking parameters
-    IF product_sn = '' THEN
+    IF product_id = '' THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'product_sn cannot be null.';
+        SET MESSAGE_TEXT = 'product_id cannot be null.';
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `product` WHERE `serial_number` = product_sn LIMIT 1) THEN
+    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
@@ -352,7 +352,7 @@ BEGIN
     FROM `product`
     LEFT JOIN `category` ON `category`.`id` = `product`.`id_category`
     LEFT JOIN `supplier` ON `supplier`.`id` = `product`.`id_supplier`
-    WHERE `product`.`serial_number` = product_sn;
+    WHERE `product`.`id` = product_id;
 END $$
 
 CREATE PROCEDURE `get_all_distributors`()

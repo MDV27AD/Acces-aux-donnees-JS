@@ -1,6 +1,5 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
-import { Distributor } from "./types";
-import { distributors } from ".";
+import { distributors } from "../distributors";
 
 export const seedDistributors = async (conn: Connection) => {
   for (const distributor of distributors) {

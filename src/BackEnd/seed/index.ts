@@ -1,33 +1,12 @@
-import { faker } from "@faker-js/faker/locale/fr";
 import dotenv from "dotenv";
+dotenv.config();
+
+import { faker } from "@faker-js/faker/locale/fr";
 import { Connection, createConnection } from "mysql2/promise";
 import { seedDistributors } from "./distributors";
 import { seedProducts } from "./products";
-import { Category, Distributor, Supplier } from "./types";
+import { Category, Supplier } from "./types";
 import { getDatabaseConfig } from "../database";
-
-dotenv.config();
-
-const getDistributorMongoUrl = (identifier: string) =>
-  `https://acces-aux-donnees-js-${identifier}.onrender.com/products`;
-
-export const distributors: Distributor[] = [
-  {
-    name: "SPORT SALUT",
-    categories: ["Sport", "Sport Sain"],
-    mongoUrl: getDistributorMongoUrl("sport-salut"),
-  },
-  {
-    name: "GamEZ",
-    categories: ["Jeu vidéo", "Jeu de société"],
-    mongoUrl: getDistributorMongoUrl("mongodb-gameez"),
-  },
-  {
-    name: "MEDIDONC",
-    categories: ["Sport Sain", "Santé"],
-    mongoUrl: getDistributorMongoUrl("medidonc"),
-  },
-];
 
 export const suppliers: Supplier[] = faker.helpers.multiple(
   faker.company.name,

@@ -5,7 +5,7 @@ import { faker } from "@faker-js/faker/locale/fr";
 import { Connection, createConnection } from "mysql2/promise";
 import { seedDistributors } from "./distributors";
 import { seedProducts } from "./products";
-import { Category, Supplier } from "./types";
+import { Supplier } from "./types";
 import { getDatabaseConfig } from "../database";
 
 export const suppliers: Supplier[] = faker.helpers.multiple(
@@ -14,15 +14,6 @@ export const suppliers: Supplier[] = faker.helpers.multiple(
     count: { min: 15, max: 20 },
   }
 );
-
-export const categories: Category[] = [
-  "Sport",
-  "Sport Sain",
-  "Santé",
-  "Jeu vidéo",
-  "Jeu de société",
-  ...faker.helpers.multiple(faker.commerce.department, { count: 5 }),
-];
 
 const truncateTables = async (conn: Connection) => {
   await conn.query("SET FOREIGN_KEY_CHECKS = 0;");

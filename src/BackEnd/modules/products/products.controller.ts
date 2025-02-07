@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { Connection } from "mysql2/promise";
-import { distributors } from "../../distributors";
+import { DISTRIBUTORS } from "../../constants";
 import { sendMessage } from "../../messages";
 import { getCategoryDistributor } from "../helper";
 import productsService from "./products.service";
@@ -102,7 +102,7 @@ export default (conn: Connection) => {
 async function updateMongoProduct(
   data: UpdateProductData
 ): Promise<[object, true] | [null, false]> {
-  const productDistributor = distributors.find((d) =>
+  const productDistributor = DISTRIBUTORS.find((d) =>
     d.categories.find(
       (c) => c.toLowerCase() === data.category.toLowerCase().trim()
     )

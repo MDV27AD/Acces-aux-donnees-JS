@@ -1,6 +1,6 @@
-import { distributors } from "../distributors";
+import { DISTRIBUTORS } from "../constants";
 
 export const getCategoryDistributor = (category: string) =>
-  distributors.find((d) =>
+  DISTRIBUTORS.find((d) =>
     d.categories.find((c) => c.toLowerCase() === category.toLowerCase().trim())
   );

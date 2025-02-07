@@ -2,18 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { Distributor } from "./seed/types";
+import { getDistributorMongoUrl } from "./helper";
 
-const getDistributorMongoUrl = (identifier: string): string => {
-  const key = `${identifier}_URL`;
-  const url = process.env[key];
-  if (!url) {
-    throw new Error(`Missing distributor endpoint url for ${identifier}`);
-  }
-
-  return url;
-};
-
-export const distributors: Distributor[] = [
+export const DISTRIBUTORS: Distributor[] = [
   {
     name: "SPORT SALUT",
     categories: ["Sport", "Sport Sain"],
@@ -30,3 +21,11 @@ export const distributors: Distributor[] = [
     mongoUrl: getDistributorMongoUrl("MEDIDONC"),
   },
 ];
+
+export const CATEGORIES = [
+  "Sport",
+  "Sport Sain",
+  "Santé",
+  "Jeu vidéo",
+  "Jeu de société",
+] as const;

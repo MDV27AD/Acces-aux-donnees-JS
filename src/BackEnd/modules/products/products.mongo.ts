@@ -6,16 +6,16 @@ export default () => {
   async function updateProduct(
     data: UpdateProductData
   ): Promise<[object, true] | [null, false]> {
-    const productDistributor = DISTRIBUTORS.find((d) =>
+    const distributor = DISTRIBUTORS.find((d) =>
       d.categories.find(
         (c) => c.toLowerCase() === data.category.toLowerCase().trim()
       )
     );
-    if (!productDistributor) {
+    if (!distributor) {
       return [null, false];
     }
 
-    const mongoRes = await fetch(productDistributor?.mongoUrl, {
+    const res = await fetch(distributor.mongoUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,13 +25,13 @@ export default () => {
         update: true,
       }),
     });
-    if (!mongoRes.ok) {
-      console.error("Error while posting updated product to mongo:", mongoRes);
+    if (!res.ok) {
+      console.error("Error while posting updated product to mongo:", res);
       return [null, false];
     }
 
     try {
-      const data = await mongoRes.json();
+      const data = await res.json();
       return [data.product, true];
     } catch (err) {
       console.error("Error while parsing mongo's update response:", err);
@@ -49,14 +49,11 @@ export default () => {
       return false;
     }
 
-    const mongoRes = await fetch(
-      `${productDistributor?.mongoUrl}/${serialNumber}`,
-      {
-        method: "DELETE",
-      }
-    );
-    if (!mongoRes.ok) {
-      console.error("Error while deleting product from mongo:", mongoRes);
+    const res = await fetch(`${productDistributor?.mongoUrl}/${serialNumber}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      console.error("Error while deleting product from mongo:", res);
       return false;
     }
 

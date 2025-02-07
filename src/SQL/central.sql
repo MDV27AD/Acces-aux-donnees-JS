@@ -426,6 +426,27 @@ BEGIN
     SELECT * FROM `category` WHERE `id` = category_id;
 END $$
 
+CREATE PROCEDURE `toggle_distributor_status`(IN `distributor_id` INT UNSIGNED)
+NOT DETERMINISTIC
+MODIFIES SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Checking parameters
+    IF distributor_id = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'distributor_id cannot be null.';
+    END IF;
+
+    -- Checking if the requested distributor exists
+    IF NOT EXISTS (SELECT * FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The requested distributor does not exist.';
+    END IF;
+
+    -- Updating the distributor's status
+    UPDATE `distributor` SET `status` = (2 - `status` + 1) WHERE `id` = distributor_id;
+END $$
+
 DELIMITER ;
 
 -- Triggers
@@ -491,4 +512,5 @@ GRANT EXECUTE ON PROCEDURE `get_all_distributors` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `get_distributor` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `get_all_categories` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `get_category` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `toggle_distributor_status` TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

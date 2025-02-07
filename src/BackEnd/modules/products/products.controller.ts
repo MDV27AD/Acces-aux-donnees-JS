@@ -1,17 +1,14 @@
 import { Request, Response, Router } from "express";
 import { Connection } from "mysql2/promise";
-import { DISTRIBUTORS } from "../../constants";
 import { sendMessage } from "../../messages";
-import { getCategoryDistributor } from "../helper";
+import productsMongo from "./products.mongo";
 import productsService from "./products.service";
-import {
-  UpdateProductData,
-  updateProductSchema,
-} from "./schemas/update-product.schema";
+import { updateProductSchema } from "./schemas/update-product.schema";
 
 export default (conn: Connection) => {
   const router = Router();
   const service = productsService(conn);
+  const mongo = productsMongo();
 
   router.get("/", findAll);
   router.get("/:id", findOne);
@@ -56,7 +53,7 @@ export default (conn: Connection) => {
       return sendMessage(res, "internalError");
     }
 
-    const mongoDeleteSuccess = await deleteMongoProduct(
+    const mongoDeleteSuccess = await mongo.deleteProduct(
       serialNumber,
       deletedProductCategory
     );
@@ -85,7 +82,8 @@ export default (conn: Connection) => {
       return sendMessage(res, "internalError");
     }
 
-    const [updatedProduct, mongoUpdateSuccess] = await updateMongoProduct(data);
+    const [updatedProduct, mongoUpdateSuccess] =
+      await mongo.updateProduct(data);
     if (!mongoUpdateSuccess) {
       return sendMessage(res, "internalError");
     }
@@ -98,63 +96,3 @@ export default (conn: Connection) => {
     router,
   };
 };
-
-async function updateMongoProduct(
-  data: UpdateProductData
-): Promise<[object, true] | [null, false]> {
-  const productDistributor = DISTRIBUTORS.find((d) =>
-    d.categories.find(
-      (c) => c.toLowerCase() === data.category.toLowerCase().trim()
-    )
-  );
-  if (!productDistributor) {
-    return [null, false];
-  }
-
-  const mongoRes = await fetch(productDistributor?.mongoUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      ...data,
-      update: true,
-    }),
-  });
-  if (!mongoRes.ok) {
-    console.error("Error while posting updated product to mongo:", mongoRes);
-    return [null, false];
-  }
-
-  try {
-    const data = await mongoRes.json();
-    return [data.product, true];
-  } catch (err) {
-    console.error("Error while parsing mongo's update response:", err);
-  }
-
-  return [null, false];
-}
-
-async function deleteMongoProduct(
-  serialNumber: number,
-  category: string
-): Promise<boolean> {
-  const productDistributor = getCategoryDistributor(category);
-  if (!productDistributor) {
-    return false;
-  }
-
-  const mongoRes = await fetch(
-    `${productDistributor?.mongoUrl}/${serialNumber}`,
-    {
-      method: "DELETE",
-    }
-  );
-  if (!mongoRes.ok) {
-    console.error("Error while deleting product from mongo:", mongoRes);
-    return false;
-  }
-
-  return true;
-}

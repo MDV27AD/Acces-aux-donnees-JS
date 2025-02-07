@@ -19,10 +19,26 @@ const ProductSchema = new Schema(
         toJSON: {
             transform(_doc, rec) {
                 rec.id = rec._id
+                rec.sku = rec.sku_produit
+                rec.serialNumber = rec.serial_number_produit
+                rec.name = rec.nom_produit
+                rec.description = rec.description_produit
+                rec.price = rec.p_prices
+                rec.category = rec.p_category
+                rec.supplierName = rec.nom_fournisseur
+                rec.inStock = rec.en_stock === 'Oui'
                 delete rec.__v
                 delete rec._id
                 delete rec.createdAt
                 delete rec.updatedAt
+                delete rec.sku_produit
+                delete rec.serial_number_produit
+                delete rec.nom_produit
+                delete rec.description_produit
+                delete rec.p_prices
+                delete rec.p_category
+                delete rec.nom_fournisseur
+                delete rec.en_stock
             }
         }
     }

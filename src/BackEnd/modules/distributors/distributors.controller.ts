@@ -16,7 +16,12 @@ export default (conn: Connection) => {
       return sendMessage(res, "internalError");
     }
 
-    res.json(distributors.map((d) => ({ name: d.name, status: d.status })));
+    const formattedDistributors = distributors.map((d) => ({
+      id: d.id,
+      name: d.name,
+      status: d.status,
+    }));
+    res.json(formattedDistributors);
   }
 
   async function toggleStatus(req: Request, res: Response) {

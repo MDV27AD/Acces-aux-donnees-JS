@@ -7,7 +7,7 @@ const {Schema} = mongoose
 const ProductSchema = new Schema(
     {
         p_sku: {type: String, required: true},
-        p_serial_number: {type: Number, required: true, unique: true},
+        p_serial_number: {type: String, required: true, unique: true},
         p_price: {type: Number},
         p_name: {type: String, required: true},
         p_description: {type: String},
@@ -27,7 +27,7 @@ const ProductSchema = new Schema(
                 rec.description = rec.p_description
                 rec.price = rec.p_price
                 rec.category = rec.p_category
-                rec.supplierName = rec.p_seller.name
+                rec.supplierName = rec.p_seller?.name
                 rec.inStock = rec.p_status === 'En stock'
                 delete rec.__v
                 delete rec._id

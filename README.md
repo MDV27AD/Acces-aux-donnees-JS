@@ -37,9 +37,9 @@ GAME_EZ_PORT=3060
 SPORT_SALUT_PORT=3061
 MEDIDONC_PORT=3062
 
-GAME_EZ_URL="http://localhost:3060"
-SPORT_SALUT_URL="http://localhost:3061"
-MEDIDONC_URL="http://localhost:3062"
+GAME_EZ_URL="http://localhost:3060/products"
+SPORT_SALUT_URL="http://localhost:3061/products"
+MEDIDONC_URL="http://localhost:3062/products"
 
 DB_CENTRAL_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"
 DB_ROOT_USER_URI="mysql://<user>:<password>@<host>:<port>/<database>"

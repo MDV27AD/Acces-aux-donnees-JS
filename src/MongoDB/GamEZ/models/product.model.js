@@ -31,7 +31,7 @@ const ProductSchema = new Schema(
                 rec.description = rec.product.product_description
                 rec.price = rec.product.product_price
                 rec.category = rec.product.product_category
-                rec.supplierName = rec.seller.seller_name
+                rec.supplierName = rec.seller?.seller_name
                 rec.inStock = rec.product.product_status === 'available'
                 delete rec.__v
                 delete rec._id

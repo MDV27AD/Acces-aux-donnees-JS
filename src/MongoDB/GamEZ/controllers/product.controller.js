@@ -17,8 +17,10 @@ export const createProduct = async (req, res) => {
         if (productFound) {
             if (update) {
                 for (const dataKey in data) {
-                    productFound[dataKey] = data[dataKey]
+                    if (dataKey !== 'seller') productFound[dataKey] = data[dataKey]
                 }
+                if (seller_name) productFound.seller.seller_name = seller_name
+                if(seller_creation_date) productFound.seller.seller_creation_date = seller_creation_date
                 // Return the updated product
                 return res.status(201).json({message: 'Product updated successfully', product: await productFound.save()})
             }

@@ -6,7 +6,7 @@ const {Schema} = mongoose
 const ProductSchema = new Schema(
     {
         sku_produit: {type: String, required: true},
-        serial_number_produit: {type: Number, required: true, unique: true},
+        serial_number_produit: {type: String, required: true, unique: true},
         nom_produit: {type: String, required: true},
         description_produit: {type: String},
         nom_fournisseur: {type: String},

@@ -82,3 +82,6 @@ Si cela n'ouvre pas automatiquement le navigateur, ouvrir le fichier `src/Front/
 ## Membres du groupe
 
 - Steve Bertrand ETOUNDI MINALA
+- Lucien NEUHOFF
+- Yusuf ULAS
+- Valentin OBERLIN 

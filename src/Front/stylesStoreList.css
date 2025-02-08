@@ -184,3 +184,30 @@ border-radius: 34px;
 .slider.round:before {
 border-radius: 50%;
 }
+
+@media (max-width: 1400px) {
+    body {
+        font-size: 18px;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 1100px;
+        height: auto;
+    }
+
+    .store-list {
+        width: 100%;
+        max-height: 65vh;
+    }
+
+    .store {
+        padding: 15px;
+        gap: 20px;
+        width: 95%;
+    }
+
+    .store-name {
+        font-size: 22px;
+    }
+}

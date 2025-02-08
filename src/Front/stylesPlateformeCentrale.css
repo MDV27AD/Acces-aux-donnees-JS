@@ -75,3 +75,33 @@ button:hover {
     transform: scale(1.05);
     background-color: #CCAD8F;
 }
+
+/* RESPONSIVE */
+@media (max-width: 1400px) {
+    body {
+        font-size: 18px;
+    }
+
+    .container {
+        padding-top: 30px;
+        max-width: 1000px;
+    }
+
+    h1 {
+        margin-bottom: 30px;
+        font-size: 24px;
+    }
+
+    .buttons {
+        gap: 50px;
+        max-width: 1000px;
+        flex-wrap: wrap;
+    }
+
+    button {
+        margin-top: 50px;
+        width: 250px;
+        height: 400px;
+        font-size: 28px;
+    }
+}

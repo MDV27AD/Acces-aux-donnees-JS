@@ -10,7 +10,7 @@ export default (conn: Connection) => {
   router.get("/", findAll);
   router.get("/:id/toggle-status", toggleStatus);
 
-  const storesIdMap:any = {'GameEZ' : 1, 'MEDIDONC' : 2, 'SPORT SALUT' : 3};
+  const storesIdMap:any = {'GameEZ' : 1, 'GamEZ' : 1, 'MEDIDONC' : 2, 'SPORT SALUT' : 3};
 
   async function findAll(req: Request, res: Response) {
     const [distributors, success] = await service.findAll();

@@ -17,8 +17,10 @@ export const createProduct = async (req, res) => {
         if (productFound) {
             if (update) {
                 for (const dataKey in data) {
-                    productFound[dataKey] = data[dataKey]
+                    if (dataKey !== 'seller') productFound[dataKey] = data[dataKey]
                 }
+                if (seller_name) productFound.seller.seller_name = seller_name
+                if(seller_creation_date) productFound.seller.seller_creation_date = seller_creation_date
                 // Return the updated product
                 return res.status(201).json({message: 'Product updated successfully', product: await productFound.save()})
             }
@@ -38,6 +40,15 @@ export const createProduct = async (req, res) => {
 export const getAllProducts = async (_req, res) => {
     const products = await Product.find()
     res.status(200).json(products)
+}
+
+export const getOneProduct = async (req, res) => {
+    const identifier = req.params.identifier
+    const productFound = await Product.findOne({
+        $or: [{'product.product_serial_number': identifier}, {'product.product_sku': identifier}]
+    })
+    if (productFound) return res.status(200).json(productFound)
+    return res.status(404).json({message: 'Product not found'})
 }
 
 export const getAvailableProducts = async (_req, res) => {

@@ -1,3 +1,7 @@
+-- Cleaning database and users
+DROP DATABASE IF EXISTS `central`;
+DROP USER IF EXISTS 'central_user'@'localhost';
+
 -- Database
 CREATE DATABASE `central`
 DEFAULT CHARACTER SET UTF8MB4 COLLATE utf8mb4_unicode_ci;
@@ -139,7 +143,6 @@ END $$
 CREATE PROCEDURE `modify_product`(    
     IN `modified_product_id` INT UNSIGNED,
     IN `new_sku` VARCHAR(15),
-    IN `new_serial_number` INT UNSIGNED,
     IN `new_name` VARCHAR(255),
     IN `new_description` TEXT,
     IN `new_price` MEDIUMINT UNSIGNED,
@@ -162,10 +165,6 @@ BEGIN
     IF new_sku = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'new_sku cannot be null.';
-    END IF;
-    IF new_serial_number = '' THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'new_serial_number cannot be null.';
     END IF;
     IF new_name = '' THEN
         SIGNAL SQLSTATE '45000'
@@ -193,7 +192,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = modified_product_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `product` WHERE `id` = modified_product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
@@ -215,7 +214,6 @@ BEGIN
     -- Updating the product
     UPDATE `product` SET
         `sku`           = new_sku,
-        `serial_number` = new_serial_number,
         `name`          = new_name,
         `description`   = new_description,
         `price`         = new_price,
@@ -249,7 +247,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested supplier exists
-    IF NOT EXISTS (SELECT * FROM `supplier` WHERE `id` = modified_supplier_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `supplier` WHERE `id` = modified_supplier_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested supplier does not exist.';
     END IF;
@@ -273,7 +271,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested supplier exists
-    IF NOT EXISTS (SELECT * FROM `supplier` WHERE `id` = deleted_supplier_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `supplier` WHERE `id` = deleted_supplier_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested supplier does not exist.';
     END IF;
@@ -283,25 +281,36 @@ BEGIN
     DELETE FROM `supplier` WHERE `id` = deleted_supplier_id;
 END $$
 
-CREATE PROCEDURE `delete_product`(IN `deleted_product_id` INT UNSIGNED)
+CREATE PROCEDURE `delete_product`(IN `deleted_product_sn` INT UNSIGNED)
 NOT DETERMINISTIC
 MODIFIES SQL DATA
 SQL SECURITY DEFINER
 BEGIN
+    DECLARE product_category VARCHAR(255);
+
     -- Checking parameters
-    IF deleted_product_id = '' THEN
+    IF deleted_product_sn IS NULL THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'deleted_product_id cannot be null.';
+        SET MESSAGE_TEXT = 'deleted_product_sn cannot be null.';
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `product` WHERE `id` = deleted_product_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `product` WHERE `serial_number` = deleted_product_sn LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
 
+    -- Getting the product category before deleting it
+    SELECT `category`.`name` INTO product_category FROM `product`
+    INNER JOIN `category` ON `product`.`id_category` = `category`.`id`
+    WHERE `serial_number` = deleted_product_sn
+    LIMIT 1;
+
     -- Deleting the product
-    DELETE FROM `product` WHERE `id` = deleted_product_id;
+    DELETE FROM `product` WHERE `serial_number` = deleted_product_sn;
+
+    -- Returning the product category
+    SELECT product_category AS category;
 END $$
 
 CREATE PROCEDURE `get_all_products`()
@@ -326,19 +335,19 @@ BEGIN
     LEFT JOIN `supplier` ON `supplier`.`id` = `product`.`id_supplier`;
 END $$
 
-CREATE PROCEDURE `get_product`(IN `product_sn` INT UNSIGNED)
+CREATE PROCEDURE `get_product`(IN `product_id` INT UNSIGNED)
 NOT DETERMINISTIC
 READS SQL DATA
 SQL SECURITY DEFINER
 BEGIN
     -- Checking parameters
-    IF product_sn = '' THEN
+    IF product_id = '' THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'product_sn cannot be null.';
+        SET MESSAGE_TEXT = 'product_id cannot be null.';
     END IF;
 
     -- Checking if the requested product exists
-    IF NOT EXISTS (SELECT * FROM `product` WHERE `serial_number` = product_sn LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `product` WHERE `id` = product_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested product does not exist.';
     END IF;
@@ -358,7 +367,7 @@ BEGIN
     FROM `product`
     LEFT JOIN `category` ON `category`.`id` = `product`.`id_category`
     LEFT JOIN `supplier` ON `supplier`.`id` = `product`.`id_supplier`
-    WHERE `product`.`serial_number` = product_sn;
+    WHERE `product`.`id` = product_id;
 END $$
 
 CREATE PROCEDURE `get_all_distributors`()
@@ -382,7 +391,7 @@ BEGIN
     END IF;
 
     -- Checking if the requested distributor exists
-    IF NOT EXISTS (SELECT * FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested distributor does not exist.';
     END IF;
@@ -412,13 +421,37 @@ BEGIN
     END IF;
 
     -- Checking if the requested category exists
-    IF NOT EXISTS (SELECT * FROM `category` WHERE `id` = category_id LIMIT 1) THEN
+    IF NOT EXISTS (SELECT '' FROM `category` WHERE `id` = category_id LIMIT 1) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'The requested category does not exist.';
     END IF;
 
     -- Getting the distributor's informations
     SELECT * FROM `category` WHERE `id` = category_id;
+END $$
+
+CREATE PROCEDURE `toggle_distributor_status`(IN `distributor_id` INT UNSIGNED)
+NOT DETERMINISTIC
+MODIFIES SQL DATA
+SQL SECURITY DEFINER
+BEGIN
+    -- Checking parameters
+    IF distributor_id = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'distributor_id cannot be null.';
+    END IF;
+
+    -- Checking if the requested distributor exists
+    IF NOT EXISTS (SELECT '' FROM `distributor` WHERE `id` = distributor_id LIMIT 1) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The requested distributor does not exist.';
+    END IF;
+
+    -- Updating the distributor's status
+    UPDATE `distributor` SET `status` = (2 - `status` + 1) WHERE `id` = distributor_id;
+
+    -- Returning the new distributor's status
+    SELECT `status` FROM `distributor` WHERE `id` = distributor_id;
 END $$
 
 DELIMITER ;
@@ -434,6 +467,12 @@ BEGIN
     IF NEW.created_at <> OLD.created_at THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'You cannot change the created_at time of an item.';
+    END IF;
+
+    -- Forbidding the serial_number field to be modified
+    IF NEW.serial_number <> OLD.serial_number THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'You cannot change the serial_number of a product.';
     END IF;
 
     -- Updating the updated_at field
@@ -480,4 +519,5 @@ GRANT EXECUTE ON PROCEDURE `get_all_distributors` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `get_distributor` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `get_all_categories` TO 'central_user'@'localhost';
 GRANT EXECUTE ON PROCEDURE `get_category` TO 'central_user'@'localhost';
+GRANT EXECUTE ON PROCEDURE `toggle_distributor_status` TO 'central_user'@'localhost';
 FLUSH PRIVILEGES;

@@ -1,24 +1,22 @@
 async function fetchProducts() {
     try {
-        const response = await fetch("https://acces-aux-donnees-js-mongodb-gameez.onrender.com/products");
-        console.log(response);
+        const response = await fetch("http://localhost:3060/products");
         const products = await response.json();
 
         const productList = document.querySelector(".product-list");
         productList.innerHTML = "";
 
         products.forEach((product, index) => {
-            console.log(product);
             const productElement = document.createElement("div");
             productElement.classList.add("product");
             productElement.innerHTML = `
-                <span class="product-name">${product.product.product_name}</span>
-                <p><strong>SKU:<br></br></strong> ${product.product.product_sku}</p>
-                <p><strong>Prix:<br></br></strong> ${product.product.product_price}€</p>
-                <p><strong>Description:<br></br></strong> ${product.product.product_description}</p>
-                <p><strong>Statut:<br></br></strong> ${product.product.product_status}</p>
-                <p><strong>Fournisseur:<br></br></strong> ${product.seller.seller_name}</p>
-                <p><strong>Catégorie:<br></br></strong> ${product.product.product_category}</p>
+                <span class="product-name">${product.name}</span>
+                <p><strong>SKU:<br></br></strong> ${product.sku}</p>
+                <p><strong>Prix:<br></br></strong> ${product.price}€</p>
+                <p><strong>Description:<br></br></strong> ${product.description}</p>
+                <p><strong>Statut:<br></br></strong> ${product.inStock ? "En stock" : "Rupture de stock"}</p>
+                <p><strong>Fournisseur:<br></br></strong> ${product.supplierName}</p>
+                <p><strong>Catégorie:<br></br></strong> ${product.category}</p>
             `;
             productList.appendChild(productElement);
         });
@@ -29,7 +27,7 @@ async function fetchProducts() {
 }
 
 function refreshData() {
-    fetch('https://acces-aux-donnees-js-mongodb-gameez.onrender.com/products')
+    fetch('http://localhost:3060/products')
         .then(response => response.json())
         .then(products => {
             const productList = document.querySelector('.product-list');
@@ -39,13 +37,13 @@ function refreshData() {
                 const productElement = document.createElement('div');
                 productElement.classList.add('product');
                 productElement.innerHTML = `
-                    <span class="product-name">${product.product.product_name}</span>
-                    <p><strong>SKU:<br></br></strong> ${product.product.product_sku}</p>
-                    <p><strong>Prix:<br></br></strong> ${product.product.product_price}€</p>
-                    <p><strong>Description:<br></br></strong> ${product.product.product_description}</p>
-                    <p><strong>Statut:<br></br></strong> ${product.product.product_status}</p>
-                    <p><strong>Fournisseur:<br></br></strong> ${product.seller.seller_name}</p>
-                    <p><strong>Catégorie:<br></br></strong> ${product.product.product_category}</p>
+                    <span class="product-name">${product.name}</span>
+                    <p><strong>SKU:<br></br></strong> ${product.sku}</p>
+                    <p><strong>Prix:<br></br></strong> ${product.price}€</p>
+                    <p><strong>Description:<br></br></strong> ${product.description}</p>
+                    <p><strong>Statut:<br></br></strong> ${product.inStock ? "En stock" : "Rupture de stock"}</p>
+                    <p><strong>Fournisseur:<br></br></strong> ${product.supplierName}</p>
+                    <p><strong>Catégorie:<br></br></strong> ${product.category}</p>
                 `;
                 productList.appendChild(productElement);
             });

@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
-import cors from "cors";
 dotenv.config();
 
+import cors from "cors";
 import Express from "express";
 import { createPool } from "mysql2/promise";
 import { getDatabaseConfig } from "./database";

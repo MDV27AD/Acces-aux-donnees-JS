@@ -1,14 +1,14 @@
 import { faker } from "@faker-js/faker/locale/fr";
-import { Connection, RowDataPacket } from "mysql2/promise";
-import { Category, Supplier } from "./types";
-import { categories, suppliers } from ".";
+import { Connection } from "mysql2/promise";
+import { suppliers } from ".";
+import { CATEGORIES } from "../constants";
 
 export const seedProducts = async (conn: Connection) => {
   for (const supplier of suppliers) {
     const products = await Promise.all(
       faker.helpers.multiple(
         async () => {
-          const category = faker.helpers.arrayElement(categories);
+          const category = faker.helpers.arrayElement(CATEGORIES);
           const sku = faker.string.alphanumeric({ casing: "upper", length: 8 });
           const serialNumber = faker.number.int({ max: 4294967295 - 1 });
           const name = faker.commerce.productName();

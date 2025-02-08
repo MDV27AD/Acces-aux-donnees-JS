@@ -1,5 +1,8 @@
 USE `central`;
 
+-- Cleaning users
+DROP USER IF EXISTS 'game_ez_user'@'localhost';
+
 -- Stored procedure
 DELIMITER $$
 CREATE PROCEDURE `get_products_for_gamez`()
@@ -23,6 +26,6 @@ END $$
 DELIMITER ;
 
 -- User
-CREATE USER 'gamez_user'@'localhost' IDENTIFIED BY 'ssuNB_SRGHA44WX£%§_5678IOùm:LK?NIBGYO8-rod(tyrfo-)';
-GRANT EXECUTE ON PROCEDURE `get_products_for_gamez` TO 'gamez_user'@'localhost';
+CREATE USER 'game_ez_user'@'localhost' IDENTIFIED BY 'NBFR5678IOùm:LK?NIBO87TIGYO8-rod(tyrfo-)';
+GRANT EXECUTE ON PROCEDURE `get_products_for_gamez` TO 'game_ez_user'@'localhost';
 FLUSH PRIVILEGES;

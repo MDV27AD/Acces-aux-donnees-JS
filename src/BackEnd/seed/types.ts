@@ -1,3 +1,5 @@
+import { CATEGORIES } from "../constants";
+
 export interface Distributor {
   name: string;
   categories: Category[];
@@ -14,6 +16,6 @@ export interface Product {
   price: number;
 }
 
-export type Category = string;
+export type Category = (typeof CATEGORIES)[number];
 
 export type Supplier = string;

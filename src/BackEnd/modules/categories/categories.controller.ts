@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { Connection, RowDataPacket } from "mysql2/promise";
+import { Connection } from "mysql2/promise";
 import { sendMessage } from "../../messages";
 import categoriesService from "./categories.service";
 

@@ -37,6 +37,15 @@ export const getAllProducts = async (_req, res) => {
     res.status(200).json(menus)
 }
 
+export const getOneProduct = async (req, res) => {
+    const identifier = req.params.identifier
+    const productFound = await Product.findOne({
+        $or: [{p_serial_number: identifier}, {p_sku: identifier}]
+    })
+    if (productFound) return res.status(200).json(productFound)
+    return res.status(404).json({message: 'Product not found'})
+}
+
 export const getAvailableProducts = async (_req, res) => {
     const menus = await Product.findOne({ p_status: 'En stock' })
     res.status(200).json(menus)

@@ -1,9 +1,8 @@
 import { Connection, RowDataPacket } from "mysql2/promise";
-import { Distributor } from "./types";
-import { distributors } from ".";
+import { DISTRIBUTORS } from "../constants";
 
 export const seedDistributors = async (conn: Connection) => {
-  for (const distributor of distributors) {
+  for (const distributor of DISTRIBUTORS) {
     await conn.execute(
       `
         INSERT INTO distributor (name)

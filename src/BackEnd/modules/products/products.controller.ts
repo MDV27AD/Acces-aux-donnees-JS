@@ -1,16 +1,18 @@
 import { Request, Response, Router } from "express";
 import { Connection } from "mysql2/promise";
 import { sendMessage } from "../../messages";
+import productsMongo from "./products.mongo";
 import productsService from "./products.service";
 import { updateProductSchema } from "./schemas/update-product.schema";
 
 export default (conn: Connection) => {
   const router = Router();
   const service = productsService(conn);
+  const mongo = productsMongo();
 
   router.get("/", findAll);
   router.get("/:id", findOne);
-  router.delete("/:id", deleteProduct);
+  router.delete("/:serialNumber", deleteProduct);
   router.put("/:id", updateProduct);
 
   async function findAll(req: Request, res: Response) {
@@ -25,7 +27,7 @@ export default (conn: Connection) => {
   async function findOne(req: Request<{ id: string }>, res: Response) {
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
-      return sendMessage(res, "invalidID");
+      return sendMessage(res, "invalidId");
     }
 
     const [product, success] = await service.findOne(id);
@@ -36,14 +38,26 @@ export default (conn: Connection) => {
     res.json(product);
   }
 
-  async function deleteProduct(req: Request<{ id: string }>, res: Response) {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) {
-      return sendMessage(res, "invalidID");
+  async function deleteProduct(
+    req: Request<{ serialNumber: string }>,
+    res: Response
+  ) {
+    const serialNumber = parseInt(req.params.serialNumber);
+    if (isNaN(serialNumber)) {
+      return sendMessage(res, "invalidSerial");
     }
 
-    const [_, success] = await service.deleteProduct(id);
-    if (!success) {
+    const [deletedProductCategory, dbDeleteSuccess] =
+      await service.deleteProduct(serialNumber);
+    if (!dbDeleteSuccess) {
+      return sendMessage(res, "internalError");
+    }
+
+    const mongoDeleteSuccess = await mongo.deleteProduct(
+      serialNumber,
+      deletedProductCategory
+    );
+    if (!mongoDeleteSuccess) {
       return sendMessage(res, "internalError");
     }
 
@@ -53,22 +67,27 @@ export default (conn: Connection) => {
   async function updateProduct(req: Request<{ id: string }>, res: Response) {
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
-      return sendMessage(res, "invalidID");
+      return sendMessage(res, "invalidId");
     }
 
-    const { data, success } = await updateProductSchema.safeParseAsync(
-      req.body
-    );
-    if (!success) {
+    const { data, success: parseSuccess } =
+      await updateProductSchema.safeParseAsync(req.body);
+    if (!parseSuccess) {
       return sendMessage(res, "badRequest");
     }
 
-    const [_, updateSuccess] = await service.updateProduct(id, data);
-    if (!updateSuccess) {
+    const [_, dbUpdateSuccess] = await service.updateProduct(id, data);
+    if (!dbUpdateSuccess) {
       return sendMessage(res, "internalError");
     }
 
-    res.send();
+    const [updatedProduct, mongoUpdateSuccess] =
+      await mongo.updateProduct(data);
+    if (!mongoUpdateSuccess) {
+      return sendMessage(res, "internalError");
+    }
+
+    res.json(updatedProduct);
   }
 
   return {

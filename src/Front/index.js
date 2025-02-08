@@ -15,7 +15,6 @@ async function fetchStores() {
                 storeElement.style.pointerEvents = 'auto';
                 storeElement.style.cursor = 'pointer';
 
-                // Réajouter l'événement onclick (au cas où il a été supprimé)
                 if (!storeElement.dataset.url) {
                     storeElement.dataset.url = storeElement.getAttribute('onclick')?.replace("window.location.href=", "").replace(/['"]/g, '');
                 }
@@ -25,7 +24,7 @@ async function fetchStores() {
             }
         });
 
-        // Mise à jour selon l'état des magasins
+        // on met à jour l'état des magasins
         stores.forEach((store, index) => {
             const storeElement = storeElements[`store${index + 1}`];
 

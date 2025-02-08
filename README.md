@@ -18,9 +18,8 @@ dans la base centrale, cela est également fait de manière automatique aux maga
 
 ## Installation
 
-Tout d'abord, effectuer l'installation des dépendances à l'aide de l'une des commandes suivantes :
+Effectuer l'installation des dépendances à l'aide de l'une des commandes suivantes :
 `npm i` ou `yarn install`
-
 
 ## Configuration
 

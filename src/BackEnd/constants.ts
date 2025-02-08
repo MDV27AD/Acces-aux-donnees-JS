@@ -11,7 +11,7 @@ export const DISTRIBUTORS: Distributor[] = [
     mongoUrl: getDistributorMongoUrl("SPORT_SALUT"),
   },
   {
-    name: "GamEZ",
+    name: "GameEZ",
     categories: ["Jeu vidéo", "Jeu de société"],
     mongoUrl: getDistributorMongoUrl("GAME_EZ"),
   },

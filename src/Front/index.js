@@ -26,7 +26,7 @@ async function fetchStores() {
 
         // on met à jour l'état des magasins
         stores.forEach((store, index) => {
-            const storeElement = storeElements[`store${index + 1}`];
+            const storeElement = storeElements[store.store];
 
             if (storeElement) {
                 if (store.status === 'active') {

@@ -8,33 +8,48 @@ async function fetchStores() {
             store3: document.getElementById('store3')
         };
 
+        // on réactive le click
         Object.values(storeElements).forEach(storeElement => {
             if (storeElement) {
                 storeElement.classList.remove('small-platform', 'inactive');
+                storeElement.style.pointerEvents = 'auto';
+                storeElement.style.cursor = 'pointer';
+
+                // Réajouter l'événement onclick (au cas où il a été supprimé)
+                if (!storeElement.dataset.url) {
+                    storeElement.dataset.url = storeElement.getAttribute('onclick')?.replace("window.location.href=", "").replace(/['"]/g, '');
+                }
+                if (storeElement.dataset.url) {
+                    storeElement.setAttribute("onclick", `window.location.href='${storeElement.dataset.url}'`);
+                }
             }
         });
 
+        // Mise à jour selon l'état des magasins
         stores.forEach((store, index) => {
             const storeElement = storeElements[`store${index + 1}`];
 
             if (storeElement) {
-                if (store.status == 'active') {
+                if (store.status === 'active') {
                     storeElement.classList.add('small-platform');
                 } else {
                     storeElement.classList.add('inactive');
+
+                    // on désactive le click 
+                    storeElement.removeAttribute('onclick');
+                    storeElement.style.pointerEvents = 'none';
+                    storeElement.style.cursor = 'not-allowed';
                 }
             } else {
-                console.warn(`Élément store${index + 1} non trouvé. Impossible d'appliquer une classe.`);
+                console.warn(`Élément store${index + 1} non trouvé.`);
             }
         });
-        
+
     } catch (error) {
         console.error("Erreur lors de la récupération des magasins :", error);
     }
 }
 
-// rechargement de la page
+// on rafraichis les données
 window.addEventListener('pageshow', fetchStores);
-
-// chargement de la page
 document.addEventListener("DOMContentLoaded", fetchStores);
